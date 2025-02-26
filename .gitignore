@@ -1,0 +1,14 @@
+﻿################################################################################
+# Данный GITIGNORE-файл был автоматически создан Microsoft(R) Visual Studio.
+################################################################################
+
+/Backend/.vs/Backend
+/Backend/Application/obj
+/Backend/Common/bin/Debug/net8.0
+/Backend/Common/obj
+/Backend/Domain/bin/Debug/net8.0
+/Backend/Domain/obj
+/Backend/Infrastructure/bin/Debug/net8.0
+/Backend/Infrastructure/obj
+/Backend/Web/bin/Debug/net8.0
+/Backend/Web/obj
