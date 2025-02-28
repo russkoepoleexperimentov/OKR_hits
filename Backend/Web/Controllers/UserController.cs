@@ -57,5 +57,13 @@ namespace Web.Controllers
         {
             return Ok(await _userService.GetMappedAsync(id));
         }
+
+        [Authorize]
+        [HttpGet("usersFromGroup")]
+        [ProducesResponseType<List<UserDto>>(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetUsersByGroupId(Guid id)
+        {
+            return Ok(await _userService.GetUsersByGroupId(id));
+        }
     }
 }

@@ -15,6 +15,7 @@ namespace Application.Dtos
 
     public class UserDto : BaseDto
     {
+        public GroupDto? Group { get; set; } = null!; 
         public string Credentials { get; set; } = null!;
         public Role Role { get; set; }
         public string Email { get; set; } = null!;

@@ -12,6 +12,8 @@ namespace Application.Profiles
                 .ForMember(dest => dest.HashedPassword, opt => opt.Ignore());
 
             CreateMap<User, UserDto>();
+
+
         }
     }
 }

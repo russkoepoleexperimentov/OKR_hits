@@ -87,6 +87,16 @@ namespace Application.Services
             return _mapper.Map<User, UserDto>(user);
         }
 
+        public async Task<List<UserDto>> GetUsersByGroupId(Guid? id) 
+        {
+            if (id == null)
+                throw new BadRequestException("Id was null");
+       
+            return _mapper.Map<List<UserDto>>(await _userRepository.FindByGroupId(id.Value));
+
+
+        }
+
         internal async Task<User> GetFromDbAsync(Guid id)
         {
             var user = await _userRepository.GetByIdAsync(id);
@@ -98,5 +108,6 @@ namespace Application.Services
 
             return user;
         }
+
     }
 }

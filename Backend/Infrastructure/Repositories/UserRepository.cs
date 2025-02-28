@@ -14,5 +14,13 @@ namespace Infrastructure.Repositories
         {
             return await Set.FirstOrDefaultAsync(x => x.Email == email);
         }
+
+        public async Task<List<User>> FindByGroupId(Guid id)
+        {
+            return await Set.Include(p => p.Group)
+                .Where(x => x.Group.Id == id).ToListAsync();
+
+        }
+
     }
 }
