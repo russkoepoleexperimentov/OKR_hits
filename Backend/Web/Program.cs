@@ -1,6 +1,13 @@
 
+using Application.Dtos;
+using Application.Profiles;
+using Application.Services;
+using Application.Validators;
 using Common;
+using Domain.Repositories;
+using FluentValidation;
 using Infrastructure;
+using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -37,6 +44,17 @@ namespace Web
                         ValidateIssuerSigningKey = true,
                     };
                 });
+
+            builder.Services
+                .AddScoped<IUserRepository, UserRepository>()
+                .AddTransient<UserService>()
+                .AddScoped<IValidator<UserRegistrationDto>, UserRegistrationValidator>()
+                .AddScoped<IValidator<UserUpdateDto>, UserUpdateValidator>()
+                .AddAutoMapper(typeof(UserMapProfile));
+
+
+            builder.Services
+                .AddSingleton(new JWTService(AuthConfig.GetSymmetricSecurityKey(), AuthConfig.LIFETIME_MINUTES));
 
             builder.Services.AddAuthorization();
 

@@ -5,11 +5,12 @@ namespace Infrastructure
 {
     public class ApplicationContext : DbContext
     {
+        public DbSet<User> Users => Set<User>();
+
         public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
         {
             AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
         }
-
 
         // https://www.entityframeworktutorial.net/faq/set-created-and-modified-date-in-efcore.aspx
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
