@@ -50,7 +50,12 @@ namespace Web
                 .AddTransient<UserService>()
                 .AddScoped<IValidator<UserRegistrationDto>, UserRegistrationValidator>()
                 .AddScoped<IValidator<UserUpdateDto>, UserUpdateValidator>()
-                .AddAutoMapper(typeof(UserMapProfile));
+                .AddAutoMapper(typeof(UserMapProfile))
+                
+                .AddScoped<IGroupRepository, GroupRepository>()
+                .AddTransient<GroupService>()
+                .AddScoped<IValidator<GroupCreateUpdateDto>, GroupCreateValidator>()
+                .AddAutoMapper(typeof(GroupMapProfile));
 
 
             builder.Services

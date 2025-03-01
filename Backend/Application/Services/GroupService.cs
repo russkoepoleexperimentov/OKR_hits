@@ -13,15 +13,30 @@ namespace Application.Services
         private readonly IGroupRepository _groupRepository;
         private readonly IValidator<GroupCreateUpdateDto> _groupCreateValidator;
         private readonly IMapper _mapper;
+        private readonly UserService _userService;
 
         public GroupService(IGroupRepository groupRepository,
             IMapper mapper,
-            IValidator<GroupCreateUpdateDto> groupCreateValidator)
+            IValidator<GroupCreateUpdateDto> groupCreateValidator,
+            UserService userService)
         {
             _groupRepository = groupRepository;
             _groupCreateValidator = groupCreateValidator;
             _mapper = mapper;
+            _userService = userService;
         }
+
+        public async Task<List<GroupDto>> GetAllGroupsMappedAsync()
+        {
+            var groups = await _groupRepository.GetAllAsync();
+            return groups.Select(_mapper.Map<Group, GroupDto>).ToList();
+        }
+
+        public async Task<GroupDto> GetGroupMappedAsync(Guid id)
+        {
+            return _mapper.Map<Group, GroupDto>(await GetFromDbAsync(id));
+        }
+
         public async Task<Guid> CreateGroupAsync(GroupCreateUpdateDto dto)
         {
             await _groupCreateValidator.ValidateAndThrowAsync(dto);
@@ -29,11 +44,14 @@ namespace Application.Services
             if (await _groupRepository.FindByName(dto.Name) != null)
                 throw new EntryExistsException("Group with such name already exists.");
 
-            if (dto.Parent != null)
-                if (await _groupRepository.GetByIdAsync(dto.Parent.Value) == null)
-                    throw new NotFoundException("There no group with such id.");
-
             var group = _mapper.Map<GroupCreateUpdateDto, Group>(dto);
+
+            if (dto.ParentId != null)
+            {
+                var parent = await GetFromDbAsync(dto.ParentId.Value);
+
+                group.Parent = parent;
+            }
 
             await _groupRepository.AddAsync(group);
 
@@ -52,11 +70,14 @@ namespace Application.Services
             if (await _groupRepository.FindByName(dto.Name) != null)
                 throw new EntryExistsException("Group with such name already exists.");
 
-            if (dto.Parent != null)
-                if (await _groupRepository.GetByIdAsync(dto.Parent.Value) == null)
-                    throw new NotFoundException("There no group with such id.");
 
             _mapper.Map<GroupCreateUpdateDto, Group>(dto, group);
+
+            if (dto.ParentId != null)
+            {
+                var parent = await GetFromDbAsync(dto.ParentId.Value);
+                group.Parent = parent;
+            }
 
             await _groupRepository.UpdateAsync(group);
 
@@ -79,7 +100,10 @@ namespace Application.Services
 
         }
 
-        
+        public async Task<List<UserDto>> GetGroupUsersMappedAsync(Guid id)
+        {
+            return await _userService.GetUsersByGroupId(id);
+        }
 
         internal async Task<Group> GetFromDbAsync(Guid id)
         {

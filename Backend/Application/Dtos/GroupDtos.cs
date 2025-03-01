@@ -3,7 +3,7 @@ namespace Application.Dtos
 
     public class GroupCreateUpdateDto
     {
-        public Guid? Parent {  get; set; } = null!;
+        public Guid? ParentId {  get; set; } = null!;
 
         public string Name { get; set; } = null!;
     }
