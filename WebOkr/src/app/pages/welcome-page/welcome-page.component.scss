@@ -1,0 +1,30 @@
+@import '../../environment/variables';
+
+.welcome-page-container {
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    padding-top:323px;
+    max-height: 287px;
+    width: 754px;
+    margin: auto;
+}
+
+.wp-main-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: #fff;
+    border-radius: 6px;
+    height: 287px; 
+    width: 100%;
+}
+
+.buttons-container{
+    height: 141px;
+    max-height: 141px;
+    display: flex;
+    flex-direction: column;
+    gap:37px;
+    padding: 0 73px 0 73px;
+}
