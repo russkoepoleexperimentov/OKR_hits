@@ -58,7 +58,7 @@ namespace Web
                 .AddAutoMapper(typeof(GroupMapProfile))
                 
                 .AddScoped<IStudentApplicationRepository, StudentApplicationRepository>()
-                //.AddTransient<StudentApplicationService>()
+                .AddTransient<ApplicationService>()
                 .AddScoped<IValidator<StudentApplicationCreateUpdateDto>, StudentApplicationCreateUpdateValidator>()
                 .AddAutoMapper(typeof(StudentApplicationMapProfile));
 
