@@ -1,0 +1,14 @@
+@import '../../environment/variables';
+
+.header{
+    background-color: $Header-Bg-Color;
+    display: flex;
+    height: 65px;
+    max-height: 65px;
+    width: 100%;
+    margin:0;
+
+    .header-block{
+        align-items: center;
+    }
+}
