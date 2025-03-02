@@ -46,6 +46,21 @@ namespace Web.Controllers
         }
 
         /// <summary>
+        ///  Add attachment
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [Authorize]
+        [HttpPost("{id}/attachment")]
+        [ProducesResponseType<List<StudentApplicationDto>>(StatusCodes.Status200OK)]
+        public async Task<IActionResult> AddAttachment(Guid id,
+            AttachmentUploadDto dto)
+        {
+            var userId = HttpContext.GetUserId();
+            return Ok(await _applicationService.AddAttachment(id, userId.Value, dto));
+        }
+
+        /// <summary>
         /// Create application
         /// </summary>
         /// <param name="dto"></param>

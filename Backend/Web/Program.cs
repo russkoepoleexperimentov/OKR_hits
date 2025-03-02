@@ -51,16 +51,21 @@ namespace Web
                 .AddScoped<IValidator<UserRegistrationDto>, UserRegistrationValidator>()
                 .AddScoped<IValidator<UserUpdateDto>, UserUpdateValidator>()
                 .AddAutoMapper(typeof(UserMapProfile))
-                
+
                 .AddScoped<IGroupRepository, GroupRepository>()
                 .AddTransient<GroupService>()
                 .AddScoped<IValidator<GroupCreateUpdateDto>, GroupCreateValidator>()
                 .AddAutoMapper(typeof(GroupMapProfile))
-                
+
                 .AddScoped<IStudentApplicationRepository, StudentApplicationRepository>()
                 .AddTransient<ApplicationService>()
                 .AddScoped<IValidator<StudentApplicationCreateUpdateDto>, StudentApplicationCreateUpdateValidator>()
-                .AddAutoMapper(typeof(StudentApplicationMapProfile));
+                .AddAutoMapper(typeof(StudentApplicationMapProfile))
+
+                .AddScoped<IAttachmentRepository, AttachmentRepository>()
+                .AddTransient<AttachmentService>()
+                .AddAutoMapper(typeof(AttachmentMapProfile));
+
 
 
             builder.Services

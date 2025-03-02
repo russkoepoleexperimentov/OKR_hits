@@ -16,15 +16,17 @@ namespace Application.Services
         private readonly IValidator<StudentApplicationCreateUpdateDto> _applicationCreateValidator;
         private readonly IMapper _mapper;
         private readonly UserService _userService;
+        private readonly AttachmentService _attachmentService;
         public ApplicationService(IStudentApplicationRepository applicationRepository,
             IMapper mapper,
             IValidator<StudentApplicationCreateUpdateDto> applicationCreateValidator,
-            UserService userService)
+            UserService userService, AttachmentService attachmentService)
         {
             _applicationRepository = applicationRepository;
             _applicationCreateValidator = applicationCreateValidator;
             _mapper = mapper;
             _userService = userService;
+            _attachmentService = attachmentService;
         }
 
         public async Task<List<StudentApplicationDto>> GetAllApplicationsMappedAsync(Guid? userId, DateTime? from, DateTime? to, bool onlyOnChecking)
@@ -53,6 +55,7 @@ namespace Application.Services
             return application.Id;
 
         }
+
 
         public async Task<Guid> UpdateApplicationAsync(Guid id, StudentApplicationCreateUpdateDto dto, Guid currentUserId)
         {
@@ -86,6 +89,19 @@ namespace Application.Services
 
             return id;
 
+        }
+
+        public async Task<AttachmentDto> AddAttachment(Guid applicationId,
+            Guid userId,
+            AttachmentUploadDto dto)
+        {
+            var application = await GetFromDbAsync(applicationId);
+
+            var user = _userService.GetFromDbAsync(userId).Result;
+
+            var attachment = await _attachmentService.AddImageAsync(application, user, dto);
+
+            return attachment;
         }
 
         public async Task<Guid> ChangeApplicationStatusAsync(Guid id, StudentApplicationStatus status) 
