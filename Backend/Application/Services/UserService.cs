@@ -1,6 +1,7 @@
 ﻿using Application.Dtos;
 using AutoMapper;
 using Common;
+using Common.Enums;
 using Common.Exceptions;
 using Domain.Entities;
 using Domain.Repositories;
@@ -90,6 +91,40 @@ namespace Application.Services
         public async Task<List<UserDto>> GetUsersByGroupId(Guid id) 
         {
             return _mapper.Map<List<UserDto>>(await _userRepository.FindByGroupId(id));
+        }
+
+        public async Task<UserDto> AttachUserToGroupAsync(Group group, Guid userId) 
+        {
+            var user = await GetFromDbAsync(userId);
+
+            user.Group = group;
+
+            await _userRepository.UpdateAsync(user);
+
+            return _mapper.Map<User, UserDto>(user);
+        }
+
+        public async Task<UserDto> DetatchUserFromGroupAsync(Guid userId) 
+        {
+            var user = await GetFromDbAsync(userId);
+
+            user.Group = null;
+
+            await _userRepository.UpdateAsync(user);
+
+            return _mapper.Map<User, UserDto>(user);
+        }
+
+        public async Task<Guid> ChangeUsersRoleAsync(Guid userId, Role role)
+        {
+            var user = await GetFromDbAsync(userId);
+
+            user.Role = role;
+
+            await _userRepository.UpdateAsync(user);
+
+            return userId;
+
         }
 
         internal async Task<User> GetFromDbAsync(Guid id)

@@ -100,6 +100,21 @@ namespace Application.Services
 
         }
 
+        public async Task<Guid> AttachStudentsToGroupAsync(Guid? groupId, List<Guid> usersId)
+        {
+            if (groupId == null)
+                throw new BadRequestException("Id was null");
+
+            var group = _groupRepository.GetByIdAsync(groupId.Value);
+
+            foreach (var userId in usersId)
+            {
+                await _userService.AttachUserToGroupAsync(group.Result, userId);
+            }
+
+            return groupId.Value;
+        }
+
         public async Task<List<UserDto>> GetGroupUsersMappedAsync(Guid id)
         {
             return await _userService.GetUsersByGroupId(id);

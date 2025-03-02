@@ -1,5 +1,6 @@
 ﻿using Application.Dtos;
 using Application.Services;
+using Common.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -79,5 +80,47 @@ namespace Web.Controllers
         {
             return Ok(await _userService.GetMappedAsync(id));
         }
+
+        /// <summary>
+        /// [Deneary] Detatch user from a group
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [Authorize(Roles = AccessRights.Deneary)]
+        [HttpPost("{id}/detatchGroup")]
+        [ProducesResponseType<UserDto>(StatusCodes.Status200OK)]
+        public async Task<IActionResult> DetachUserFromAgroup(Guid id)
+        {
+            return Ok(await _userService.DetatchUserFromGroupAsync(id)); 
+        }
+
+        /// <summary>
+        /// [Admin] Give user deanary role
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [Authorize(Roles = AccessRights.Admin)]
+        [HttpPost("{id}/makeDeanary")]
+        [ProducesResponseType<Guid>(StatusCodes.Status200OK)]
+        public async Task<IActionResult> MakeUserDeanary(Guid id)
+        {
+            return Ok(await _userService.ChangeUsersRoleAsync(id, Role.Deneary));
+        }
+
+        /// <summary>
+        /// [Deanary] Give user teacher role
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [Authorize(Roles = AccessRights.Deneary)]
+        [HttpPost("{id}/makeTeacher")]
+        [ProducesResponseType<Guid>(StatusCodes.Status200OK)]
+        public async Task<IActionResult> MakeUserTeacher(Guid id)
+        {
+            return Ok(await _userService.ChangeUsersRoleAsync(id, Role.Teacher));
+        }
+
+
+
     }
 }

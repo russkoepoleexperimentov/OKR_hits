@@ -97,5 +97,18 @@ namespace Web.Controllers
         {
             return Ok(await _groupService.GroupDeleteAsync(id));
         }
+
+        /// <summary>
+        /// [Deneary] Attach users to a group
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [Authorize(Roles = AccessRights.Deneary)]
+        [HttpPost("{id}/users")]
+        [ProducesResponseType<Guid>(StatusCodes.Status200OK)]
+        public async Task<IActionResult> AttachUsersToAgroup(Guid id, List<Guid> usersId)
+        {
+            return Ok(await _groupService.AttachStudentsToGroupAsync(id, usersId));
+        }
     }
 }
