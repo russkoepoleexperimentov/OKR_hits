@@ -1,6 +1,10 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\Backend",
+    "\\Backend\\Common",
+    "\\Backend\\Web"
   ],
+  "SelectedNode": "\\Backend\\Web\\bin",
   "PreviewInSolutionExplorer": false
 }

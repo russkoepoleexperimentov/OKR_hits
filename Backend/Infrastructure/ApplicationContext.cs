@@ -9,6 +9,7 @@ namespace Infrastructure
         public DbSet<User> Users => Set<User>();
 
         public DbSet<Group> Groups => Set<Group>();
+        public DbSet<StudentApplication> StudentApplications => Set<StudentApplication>();
 
         public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
         {
