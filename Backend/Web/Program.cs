@@ -55,7 +55,12 @@ namespace Web
                 .AddScoped<IGroupRepository, GroupRepository>()
                 .AddTransient<GroupService>()
                 .AddScoped<IValidator<GroupCreateUpdateDto>, GroupCreateValidator>()
-                .AddAutoMapper(typeof(GroupMapProfile));
+                .AddAutoMapper(typeof(GroupMapProfile))
+                
+                .AddScoped<IStudentApplicationRepository, StudentApplicationRepository>()
+                //.AddTransient<StudentApplicationService>()
+                .AddScoped<IValidator<StudentApplicationCreateUpdateDto>, StudentApplicationCreateUpdateValidator>()
+                .AddAutoMapper(typeof(StudentApplicationMapProfile));
 
 
             builder.Services

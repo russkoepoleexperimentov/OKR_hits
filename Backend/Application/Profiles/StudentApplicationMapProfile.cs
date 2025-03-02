@@ -6,9 +6,9 @@ using Domain.Entities;
 
 namespace Application.Profiles
 {
-    public class ApplicationMapProfile : Profile
+    public class StudentApplicationMapProfile : Profile
     {
-        public ApplicationMapProfile() 
+        public StudentApplicationMapProfile() 
         {
             CreateMap<StudentApplication, StudentApplicationDto>();
 
