@@ -1,3 +1,6 @@
-<button class="button">
+<button class="button"
+[attr.type]="type"
+[ngStyle]="{'height': height}"
+[routerLink]="route">
     {{text}}
 </button>
