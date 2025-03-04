@@ -13,4 +13,5 @@ export class ButtonComponent {
   @Input() text: string = '';
   @Input() route: string = '';
   @Input() height: string = '52px';
+  @Input() type: string = 'button';
 }

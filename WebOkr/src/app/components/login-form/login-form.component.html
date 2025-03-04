@@ -1,0 +1,18 @@
+<form #registerForm="ngForm" (ngSubmit)="onSubmit(loginForm.value)">
+    <div class="login-form">
+        <div class="title-text">
+            <div class="title">Вход</div>
+        </div>
+        <div class="input-block">
+            <input type="text" placeholder="Имя" name="name" ngModel required>
+            <input type="text" placeholder="Фамилия" name="surname" ngModel required>
+            <input type="tel" placeholder="Номер телефона" name="phoneNumber" ngModel phoneMask required>
+            <input type="email" placeholder="Почта" name="email" ngModel required>
+            <input type="password" placeholder="Пароль" name="password" ngModel required>
+            <input type="text" placeholder="Номер группы" name="groupNumber" ngModel required>
+        </div>
+        <div class="button-container">
+            <app-button type="submit" text="Войти" height="40px" route="/"></app-button>
+        </div>
+    </div>
+</form>

@@ -1,16 +1,62 @@
-<div class="register-form">
-    <div class="title-text">
-        <div class="title">Регистрация</div>
+<form #registerForm="ngForm" (ngSubmit)="onSubmit(registerForm)">
+    <div class="register-form">
+        <div class="title-text">
+            <div class="title">Регистрация</div>
+        </div>
+        <div class="input-block">
+            <div class="input-group">
+                <input type="text" placeholder="Имя" name="name" ngModel required>
+            </div>
+
+            <div class="input-group">
+                <input type="text" placeholder="Фамилия" name="surname" ngModel required>
+            </div>
+
+
+            <div class="input-group">
+                <input type="tel" placeholder="Номер телефона" name="phoneNumber" ngModel phoneMask required>
+            </div>
+
+            <div class="input-group">
+                <input type="email" placeholder="Почта" name="email" ngModel #emailCtrl="ngModel" required email>
+                <div class="error-container"
+                    [ngClass]="{'show': emailCtrl.invalid && (emailCtrl.touched || registerForm.submitted)}">
+                    <div class="error-message" *ngIf="emailCtrl.errors?.['required']">
+                        Email обязателен
+                    </div>
+                    <div class="error-message" *ngIf="emailCtrl.errors?.['email']">
+                        Введите корректный email
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <div class="password-wrapper">
+                    <input [type]="isPasswordVisible ? 'text' : 'password'" placeholder="Пароль" name="password" ngModel
+                        #passwordCtrl="ngModel" required minlength="6">
+                    <button type="button" class="password-toggle" (click)="togglePasswordVisibility()">
+                        <fa-icon [icon]="isPasswordVisible ? faEyeSlash : faEye"></fa-icon>
+                    </button>
+                </div>
+                <div class="error-container"
+                    [ngClass]="{'show': passwordCtrl.invalid && (passwordCtrl.touched || registerForm.submitted)}">
+                    <div class="error-message" *ngIf="passwordCtrl.errors?.['required']">
+                        Пароль обязателен
+                    </div>
+                    <div class="error-message" *ngIf="passwordCtrl.errors?.['minlength']">
+                        Пароль должен быть минимум 6 символов
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <input type="text" placeholder="Номер группы" name="groupNumber" ngModel required>
+            </div>
+        </div>
+
+
+        <div class="button-container">
+            <app-button type="submit" text="Зарегистрироваться" height="40px" route="/123"></app-button>
+        </div>
     </div>
-    <div class="input-block">
-        <input type="text" placeholder="Имя" name="name" id="name" required>
-        <input type="text" placeholder="Фамилия" name="surname" id="surname" required>
-        <input type="tel" placeholder="Номер телефона" name="phone-number" id="phone-number" phoneMask>
-        <input type="email" placeholder="Почта" name="email" id="email" required>
-        <input type="password" placeholder="Пароль" name="password" id="password" required>
-        <input type="text" placeholder="Номер группы" name="group-number" id="group-number" required>
-    </div>
-    <div class="button-container">
-    <app-button text="Зарегистрироваться" height="40px" route="/"></app-button>
-</div>
-</div>
+</form>
