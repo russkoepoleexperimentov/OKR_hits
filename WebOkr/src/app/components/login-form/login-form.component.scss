@@ -1,0 +1,100 @@
+@import '../../environment/variables';
+
+.login-form {
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+    border-radius: 6px;
+    box-shadow: 0px 0px 5px 1px #aaaaaa;
+    height: fit-content;
+    width: 655px;
+    margin: auto;
+    margin-top: 7%;
+    padding: 24px 22px 24px 22px;
+}
+
+.title-text {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+
+    .title {
+        font-size: 24px;
+        font-weight: 525;
+        text-align: center;
+        font-family: 'Inter', sans-serif;
+    }
+}
+
+.input-block {
+    display: flex;
+    flex-direction: column;
+    gap: 24px; 
+    padding: 0 24px;
+    font-family: 'Inter', sans-serif;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+
+    input {
+        background-color: $Input-Bg-Color;
+        border-radius: 12px;
+        height: 36px;
+        border: none;
+        outline: none;
+        font-size: 16px;
+        padding-left: 16px;
+        font: inherit;
+    }
+
+    .password-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+
+        input {
+            width: 100%;
+            padding-right: 40px;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 10px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+        }
+    }
+
+    .error-container {
+        font-size: 12px;
+        color: red;
+        margin: 4px 0 0 0; 
+        max-height: 0;
+        opacity: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease, opacity 0.3s ease;
+
+        &.show {
+            max-height: 100px;
+            opacity: 1;
+        }
+
+        .error-message {
+            margin: 0;
+            padding-left: 20px;
+        }
+    }
+}
+
+
+
+.button-container {
+    padding: 0 160px;
+    height: 40px;
+}
