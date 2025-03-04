@@ -97,7 +97,7 @@ namespace Application.Services
         {
             var user = await GetFromDbAsync(userId);
 
-            user.Group = group;
+            user.GroupId = group.Id;
 
             await _userRepository.UpdateAsync(user);
 
@@ -108,7 +108,7 @@ namespace Application.Services
         {
             var user = await GetFromDbAsync(userId);
 
-            user.Group = null;
+            user.GroupId = null;
 
             await _userRepository.UpdateAsync(user);
 

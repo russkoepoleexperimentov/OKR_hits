@@ -17,8 +17,7 @@ namespace Infrastructure.Repositories
 
         public async Task<List<User>> FindByGroupId(Guid id)
         {
-            return await Set.Include(p => p.Group)
-                .Where(x => x.Group.Id == id).ToListAsync();
+            return await Set.Where(x => x.GroupId == id).ToListAsync();
 
         }
 

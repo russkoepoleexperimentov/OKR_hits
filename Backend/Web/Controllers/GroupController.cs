@@ -105,10 +105,11 @@ namespace Web.Controllers
         /// <returns></returns>
         [Authorize(Roles = AccessRights.Deneary)]
         [HttpPost("{id}/users")]
-        [ProducesResponseType<Guid>(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> AttachUsersToAgroup(Guid id, List<Guid> usersId)
         {
-            return Ok(await _groupService.AttachStudentsToGroupAsync(id, usersId));
+            await _groupService.AttachStudentsToGroupAsync(id, usersId);
+            return Ok();
         }
     }
 }
