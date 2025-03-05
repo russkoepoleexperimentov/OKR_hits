@@ -21,5 +21,19 @@ namespace Infrastructure.Repositories
 
         }
 
+        public async Task<List<User>> Search(Guid? groupId, string? credentialsQuery = null)
+        {
+            credentialsQuery ??= string.Empty;
+            credentialsQuery = credentialsQuery.ToUpper();
+
+            var query = Set.Where(x => x.Credentials.ToUpper().Contains(credentialsQuery));
+
+            if(groupId != null)
+            {
+                query = query.Where(x => x.GroupId == groupId);
+            }
+
+            return await query.ToListAsync();
+        }
     }
 }

@@ -127,6 +127,11 @@ namespace Application.Services
 
         }
 
+        public async Task<List<UserDto>> Search(Guid? groupId, string? nameQuery)
+        {
+            return (await _userRepository.Search(groupId, nameQuery)).Select(_mapper.Map<User, UserDto>).ToList();
+        }
+
         internal async Task<User> GetFromDbAsync(Guid id)
         {
             var user = await _userRepository.GetByIdAsync(id);
