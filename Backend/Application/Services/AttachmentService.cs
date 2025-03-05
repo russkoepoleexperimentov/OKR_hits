@@ -1,13 +1,9 @@
 ﻿using Application.Dtos;
-using Application.Validators;
 using AutoMapper;
-using Common;
 using Common.Enums;
 using Common.Exceptions;
 using Domain.Entities;
 using Domain.Repositories;
-using FluentValidation;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Application.Services
 {
@@ -33,21 +29,16 @@ namespace Application.Services
         {
             var attachment = await GetFromDbAsync(id);
 
-            var data = File.ReadAllBytes(attachment.Path);
+            var data = await File.ReadAllBytesAsync(attachment.Path);
 
             return new()
-            {
-                Id = attachment.Id,
-                ApplicationId = attachment.Application.Id,
-                Author = attachment.Author.Id,
-                CreatedAt = attachment.CreatedAt,
-                UpdatedAt = attachment.UpdatedAt,
+            { 
                 Data = data,
                 ContentType = attachment.ContentType!
             };
         }
 
-        public async Task<Attachment> UploadAndGetAsync(User author, AttachmentUploadDto dto, StudentApplication application)
+        private async Task<Attachment> UploadAndGetAsync(User author, AttachmentUploadDto dto, StudentApplication application)
         {
             var path = "/app/images";
 
@@ -79,7 +70,7 @@ namespace Application.Services
         }
 
 
-        public async Task<AttachmentDto> AddImageAsync(
+        public async Task<Guid> AddImageAsync(
             StudentApplication application,
             User user,
             AttachmentUploadDto dto
@@ -97,12 +88,12 @@ namespace Application.Services
 
             await _attachmentRepository.UpdateAsync(image);
 
-            return _mapper.Map<Attachment, AttachmentDto>(image);
+            return image.Id;
         }
 
-        public async Task<List<AttachmentDto>> GetAllByApplicationId(Guid id)
+        public async Task<List<Attachment>> GetAllByApplicationId(Guid id)
         {
-            return _mapper.Map<List<AttachmentDto>>(await _attachmentRepository.FindByApplicationId(id));
+            return await _attachmentRepository.FindByApplicationId(id);
         }
 
 

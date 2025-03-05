@@ -10,9 +10,9 @@ namespace Infrastructure.Repositories
         {
         }
 
-        public async Task<List<Attachment>?> FindByApplicationId(Guid id)
+        public async Task<List<Attachment>> FindByApplicationId(Guid id)
         {
-            return await Set.Include(p => p.Application)
+            return await Set
                 .Where(x => x.Application.Id == id).ToListAsync();
         }
 

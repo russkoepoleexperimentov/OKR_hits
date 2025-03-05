@@ -10,10 +10,7 @@ namespace Application.Dtos
 
     public class AttachmentDto: BaseDto
     {
-        public Guid Author {  get; set; }
-        public Guid ApplicationId { get; set; }
         public byte[] Data { get; set; } = null!;
         public string ContentType { get; set; } = null!;
-
     }
 }

@@ -25,10 +25,11 @@ namespace Web.Controllers
         /// <returns></returns>
         [Authorize]
         [HttpGet("{id}")]
-        [ProducesResponseType<List<UserDto>>(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetUsersByGroupId(Guid id)
         {
-            return Ok(await _attachmentService.GetAttachmentById(id));
+            var attachmentInfo = await _attachmentService.GetAttachmentById(id);
+            return File(attachmentInfo.Data, attachmentInfo.ContentType);
         }
     }
 }
