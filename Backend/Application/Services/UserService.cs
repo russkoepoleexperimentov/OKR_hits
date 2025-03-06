@@ -12,7 +12,6 @@ namespace Application.Services
     public class UserService
     {
         private readonly IUserRepository _userRepository;
-        private readonly ApplicationService _applicationService;
         private readonly IValidator<UserRegistrationDto> _registrationValidator;
         private readonly IValidator<UserUpdateDto> _updateValidator;
         private readonly IMapper _mapper;
@@ -22,15 +21,13 @@ namespace Application.Services
             IMapper mapper,
             IValidator<UserRegistrationDto> registrationValidator,
             IValidator<UserUpdateDto> updateValidator,
-            JWTService jwtService,
-            ApplicationService applicationService)
+            JWTService jwtService)
         {
             _userRepository = userRepository;
             _registrationValidator = registrationValidator;
             _updateValidator = updateValidator;
             _mapper = mapper;
             _jwtService = jwtService;
-            _applicationService = applicationService;
         }
 
         public async Task<TokenResponseDto> RegisterAndGetTokenAsync(UserRegistrationDto dto)
@@ -133,11 +130,6 @@ namespace Application.Services
         public async Task<List<UserDto>> Search(Guid? groupId, string? nameQuery)
         {
             return (await _userRepository.Search(groupId, nameQuery)).Select(_mapper.Map<User, UserDto>).ToList();
-        }
-
-        public async Task<List<StudentApplicationDto>> GetAllYoursApplication(Guid userId, DateTime? from, DateTime? to, bool onlyOnChecking) 
-        {
-            return await _applicationService.GetAllApplicationsMappedAsync(userId, from, to, onlyOnChecking);
         }
 
         internal async Task<User> GetFromDbAsync(Guid id)

@@ -38,11 +38,11 @@ namespace Web.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [Authorize(Roles = AccessRights.Deneary)]
-        [HttpGet]
+        [HttpGet("search")]
         [ProducesResponseType<List<StudentApplicationDto>>(StatusCodes.Status200OK)]
-        public async Task<IActionResult> SearchInAll (Guid? id, DateTime? from, DateTime? to, bool onlyChecking)
+        public async Task<IActionResult> SearchInAll (Guid? studentId, DateTime? from, DateTime? to, bool onlyChecking)
         {
-            return Ok(await _applicationService.GetAllApplicationsMappedAsync(id, from, to, onlyChecking));
+            return Ok(await _applicationService.GetAllApplicationsMappedAsync(studentId, from, to, onlyChecking));
         }
 
         /// <summary>
@@ -118,6 +118,20 @@ namespace Web.Controllers
             return Ok(await _applicationService.DeleteApplicationAsync(id, userId.Value));
         }
 
+        /// <summary>
+        /// Search in yours applications
+        /// </summary>
+        /// <returns></returns>
+        [Authorize]
+        [HttpGet]
+        [ProducesResponseType<List<StudentApplicationDto>>(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetYoursApplications(DateTime? from, DateTime? to, bool onlyChecking)
+        {
+
+            var id = HttpContext.GetUserId();
+
+            return Ok(await _applicationService.GetAllApplicationsMappedAsync(id.Value, from, to, onlyChecking));
+        }
 
         /// <summary>
         /// Change application status
