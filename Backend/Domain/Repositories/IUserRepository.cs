@@ -7,5 +7,6 @@ namespace Domain.Repositories
         Task<User?> FindByEmail(string email);
 
         Task<List<User>> FindByGroupId(Guid id);
+        Task<List<User>> Search(Guid? groupId, string? nameQuery);
     }
 }

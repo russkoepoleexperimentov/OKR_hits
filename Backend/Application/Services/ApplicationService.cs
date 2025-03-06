@@ -91,7 +91,7 @@ namespace Application.Services
 
         }
 
-        public async Task<AttachmentDto> AddAttachment(Guid applicationId,
+        public async Task<Guid> AddAttachment(Guid applicationId,
             Guid userId,
             AttachmentUploadDto dto)
         {
@@ -99,9 +99,9 @@ namespace Application.Services
 
             var user = _userService.GetFromDbAsync(userId).Result;
 
-            var attachment = await _attachmentService.AddImageAsync(application, user, dto);
+            var attachmentId = await _attachmentService.AddImageAsync(application, user, dto);
 
-            return attachment;
+            return attachmentId;
         }
 
         public async Task<Guid> ChangeApplicationStatusAsync(Guid id, StudentApplicationStatus status) 
@@ -127,6 +127,10 @@ namespace Application.Services
             return application;
         }
 
+        public async Task<List<Guid>> GetAttachments(Guid id)
+        {
+            return (await _attachmentService.GetAllByApplicationId(id)).Select(x => x.Id).ToList();
+        }
     }
 
 }

@@ -52,12 +52,25 @@ namespace Web.Controllers
         /// <returns></returns>
         [Authorize]
         [HttpPost("{id}/attachment")]
-        [ProducesResponseType<List<StudentApplicationDto>>(StatusCodes.Status200OK)]
+        [ProducesResponseType<Guid>(StatusCodes.Status200OK)]
         public async Task<IActionResult> AddAttachment(Guid id,
             AttachmentUploadDto dto)
         {
             var userId = HttpContext.GetUserId();
             return Ok(await _applicationService.AddAttachment(id, userId.Value, dto));
+        }
+
+        /// <summary>
+        ///  Get all attachments
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [Authorize]
+        [HttpGet("{id}/attachment")]
+        [ProducesResponseType<List<Guid>>(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetAttachment(Guid id)
+        {
+            return Ok(await _applicationService.GetAttachments(id));
         }
 
         /// <summary>

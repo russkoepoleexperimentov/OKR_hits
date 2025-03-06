@@ -1,11 +1,10 @@
 ﻿using Common.Enums;
-using System.Text.RegularExpressions;
 
 namespace Domain.Entities
 {
     public class User : BaseEntity
     {
-        public virtual Group? Group { get; set; } 
+        public Guid? GroupId { get; set; } 
         public string Credentials { get; set; } = null!;
         public Role Role { get; set; }
         public string Email { get; set; } = null!;

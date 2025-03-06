@@ -8,7 +8,7 @@ namespace Application.Profiles
     {
         public AttachmentMapProfile()
         {
-            CreateMap<Attachment, AttachmentDto>();
+            //CreateMap<Attachment, AttachmentDto>();
         }
     }
 }

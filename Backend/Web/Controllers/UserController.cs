@@ -69,6 +69,17 @@ namespace Web.Controllers
             return Ok(await _userService.UpdateAndGetMappedAsync(id, dto));
         }
 
+        /// <summary>
+        /// Search users
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("search")]
+        [ProducesResponseType<UserDto>(StatusCodes.Status200OK)]
+        public async Task<IActionResult> Search(Guid? groupId, string? query)
+        {
+            return Ok(await _userService.Search(groupId, query));
+        }
+
 
         /// <summary>
         /// Profile of user with specific Id

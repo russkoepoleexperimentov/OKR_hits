@@ -17,10 +17,23 @@ namespace Infrastructure.Repositories
 
         public async Task<List<User>> FindByGroupId(Guid id)
         {
-            return await Set.Include(p => p.Group)
-                .Where(x => x.Group.Id == id).ToListAsync();
+            return await Set.Where(x => x.GroupId == id).ToListAsync();
 
         }
 
+        public async Task<List<User>> Search(Guid? groupId, string? credentialsQuery = null)
+        {
+            credentialsQuery ??= string.Empty;
+            credentialsQuery = credentialsQuery.ToUpper();
+
+            var query = Set.Where(x => x.Credentials.ToUpper().Contains(credentialsQuery));
+
+            if(groupId != null)
+            {
+                query = query.Where(x => x.GroupId == groupId);
+            }
+
+            return await query.ToListAsync();
+        }
     }
 }

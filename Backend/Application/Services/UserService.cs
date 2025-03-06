@@ -100,7 +100,7 @@ namespace Application.Services
         {
             var user = await GetFromDbAsync(userId);
 
-            user.Group = group;
+            user.GroupId = group.Id;
 
             await _userRepository.UpdateAsync(user);
 
@@ -111,7 +111,7 @@ namespace Application.Services
         {
             var user = await GetFromDbAsync(userId);
 
-            user.Group = null;
+            user.GroupId = null;
 
             await _userRepository.UpdateAsync(user);
 
@@ -128,6 +128,11 @@ namespace Application.Services
 
             return userId;
 
+        }
+
+        public async Task<List<UserDto>> Search(Guid? groupId, string? nameQuery)
+        {
+            return (await _userRepository.Search(groupId, nameQuery)).Select(_mapper.Map<User, UserDto>).ToList();
         }
 
         public async Task<List<StudentApplicationDto>> GetAllYoursApplication(Guid userId, DateTime? from, DateTime? to, bool onlyOnChecking) 
