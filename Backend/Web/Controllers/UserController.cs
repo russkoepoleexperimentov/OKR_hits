@@ -108,6 +108,21 @@ namespace Web.Controllers
         }
 
         /// <summary>
+        /// Search in yours applications
+        /// </summary>
+        /// <returns></returns>
+        [Authorize(Roles = AccessRights.Admin)]
+        [HttpGet("/aplications")]
+        [ProducesResponseType<List<StudentApplicationDto>>(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetYoursApplications(DateTime? from, DateTime? to, bool onlyChecking)
+        {
+
+            var id = HttpContext.GetUserId();
+
+            return Ok(await _userService.GetAllYoursApplication(id.Value, from, to, onlyChecking));
+        }
+
+        /// <summary>
         /// [Deanary] Give user teacher role
         /// </summary>
         /// <param name="id"></param>
