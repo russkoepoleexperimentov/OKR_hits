@@ -17,7 +17,7 @@ export class LoginFormComponent {
   faEye = faEye;
   faEyeSlash = faEyeSlash;
 
-  togglePasswordVisibility(): void {
+  togglePasswordVisibility(): void { 
     this.isPasswordVisible = !this.isPasswordVisible;
   }
 
