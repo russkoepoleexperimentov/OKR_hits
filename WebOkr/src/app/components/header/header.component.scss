@@ -1,14 +1,57 @@
 @import '../../environment/variables';
 
-.header{
-    background-color: $Header-Bg-Color;
+.header {
     display: flex;
+    background-color: $Header-Bg-Color;
     height: 65px;
-    max-height: 65px;
     width: 100%;
-    margin:0;
+    padding: 0 20px;
 
-    .header-block{
+    .header-block {
+        display: flex;
         align-items: center;
+        justify-content: space-between;
+        padding-right: 40px;
+        width: 100%;
+    }
+
+
+    .header-title {
+        display: flex;
+        flex-direction: flex-end;
+        width: fit-content;
+        color: #fff;
+        font-size: 16px;
+        font-family: 'Inter', sans-serif;
+        font-weight: 500;
+        cursor: pointer;
+
+    }
+
+    .dropdown-menu {
+        position: absolute;
+        top: 50px; 
+        right: 20px; 
+        background: white;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        padding: 10px;
+        min-width: 100px;
+        z-index: 1000;
+
+        button {
+            width: 100%;
+            border: none;
+            background: none;
+            font-size: 14px;
+            padding: 5px 10px;
+            cursor: pointer;
+            color: black;
+            text-align: left;
+
+            &:hover {
+                background: #f0f0f0;
+            }
+        }
     }
 }

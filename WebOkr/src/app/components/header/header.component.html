@@ -1,6 +1,13 @@
 <header class="header">
     <div class="header-block">
         <img class="header-logo" src="/service_logo.ico">
-        <span *ngIf="title" class="header-title">{{title}}</span>
+
+        <div class="header-right">
+            <div *ngIf="title" class="header-title" (click)="toggleDropdown()">{{ title }}</div>
+
+            <div *ngIf="isDropdownOpen" class="dropdown-menu">
+                <button (click)="logout()">Выйти</button>
+            </div>
+        </div>
     </div>
 </header>
