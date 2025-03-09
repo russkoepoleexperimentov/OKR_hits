@@ -6,6 +6,7 @@
             <div *ngIf="title" class="header-title" (click)="toggleDropdown()">{{ title }}</div>
 
             <div *ngIf="isDropdownOpen" class="dropdown-menu">
+                <button [routerLink]="['/profile']">Профиль</button>
                 <button (click)="logout()">Выйти</button>
             </div>
         </div>

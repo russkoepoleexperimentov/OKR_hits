@@ -1,8 +1,7 @@
 @import '../../environment/variables';
 
 .application-container {
-    max-width: 300px;
-    max-height: 100px;
+    width: 100%;
     background:$Bg-Secondary-Color ;
     border-radius: 10px;
     padding: 15px;
@@ -10,6 +9,7 @@
     color: white;
     display: flex;
     flex-direction: column;
+    cursor: pointer;
     justify-content: space-between;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 

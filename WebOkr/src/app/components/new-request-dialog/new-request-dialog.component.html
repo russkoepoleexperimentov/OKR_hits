@@ -18,6 +18,15 @@
         <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
         <mat-datepicker #endPicker></mat-datepicker>
     </mat-form-field>
+
+    <div class="file-drop-zone" (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)"
+        (drop)="onDrop($event)">
+        <p *ngIf="!selectedFiles.length">Перетащите файлы сюда или нажмите для выбора</p>
+        <ul *ngIf="selectedFiles.length">
+            <li *ngFor="let file of selectedFiles">{{ file.name }}</li>
+        </ul>
+        <input type="file" #fileInput (change)="onFileSelected($event)" multiple>
+    </div>
 </div>
 
 <div mat-dialog-actions align="end">

@@ -6,13 +6,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { NewRequestDialogComponent } from '../new-request-dialog/new-request-dialog.component';
 
 @Component({
-  selector: 'app-add-button',
+  selector: 'app-add-application-button',
   standalone: true,
-  imports: [CommonModule, MatDialogModule, MatButtonModule, MatIconModule, NewRequestDialogComponent],
-  templateUrl: './add-button.component.html',
-  styleUrl: './add-button.component.scss'
+  imports: [CommonModule, MatDialogModule, MatButtonModule, MatIconModule],
+  templateUrl: './add-application-button.component.html',
+  styleUrls: ['./add-application-button.component.scss']
 })
-export class AddButtonComponent {
+export class AddApplicationButtonComponent  {
   constructor(private dialog: MatDialog) {}
 
   openDialog() {

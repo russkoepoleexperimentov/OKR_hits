@@ -9,6 +9,7 @@
 }
 
 .applications-container {
+    position: relative;
     padding: 16px 0px 16px 16px;
     display: flex;
     flex-wrap: wrap; 
@@ -16,6 +17,7 @@
     background-color: #fff;
     justify-content: flex-start; 
     width: 980px;
+    
 }
 
 app-application-card {
