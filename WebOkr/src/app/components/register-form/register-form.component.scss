@@ -98,3 +98,20 @@
     padding: 0 160px;
     height: 40px;
 }
+.button{
+    border: none;
+    outline: none;
+    background-color: $Bg-Secondary-Color;
+    color:#fff;
+    border-radius: 12px;
+    cursor: pointer;
+    text-align: center;
+    font-size: 16px;
+    height: 52px;
+    width: 100%;
+    font-family: 'Inter',sans-serif;
+    transition: background-color 0.3s ease-in-out;
+    &:hover{
+        background-color: $OnCoursor-Bg-Color;
+    }
+}
