@@ -19,7 +19,7 @@ export const routes: Routes = [
         component:LoginPageComponent
     },
     {
-        path:'profile',
+        path:'profile/:id',
         component:ProfilePageComponent
     },
     {

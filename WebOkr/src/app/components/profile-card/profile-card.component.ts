@@ -1,14 +1,18 @@
-import { Component } from '@angular/core';
-import { MatIcon } from '@angular/material/icon';
+import { CommonModule } from '@angular/common';
+import { Component, Input } from '@angular/core';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-profile-card',
-  imports: [MatIcon],
+  standalone: true,
+  imports: [MatIconModule, CommonModule],
   templateUrl: './profile-card.component.html',
   styleUrl: './profile-card.component.scss'
 })
 export class ProfileCardComponent {
-  editProfile(){
-    console.log("works!");
+  @Input() user: any; 
+
+  editProfile() {
+    console.log('Редактирование профиля:', this.user);
   }
 }

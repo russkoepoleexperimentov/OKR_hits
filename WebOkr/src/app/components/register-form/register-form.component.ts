@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common';
 import { UserServiceService } from '../../services/UserService/user-service.service';
 import { Router, RouterModule } from '@angular/router';
 
+
 @Component({
   selector: 'app-register-form',
   standalone: true,
@@ -29,8 +30,8 @@ export class RegisterFormComponent {
   onSubmit(registerForm: NgForm): void {
     if (registerForm.valid) {
 
-      const { name, surname, email, password, phoneNumber } = registerForm.value;
-      const credentials = `${name} ${surname}`.trim();
+      const { name, surname,lastname, email, password, phoneNumber } = registerForm.value;
+      const credentials = `${name} ${surname} ${lastname}`.trim();
       const normalizedPhone: string = phoneNumber
         ? String(phoneNumber).replace(/\D/g, '')
         : '';

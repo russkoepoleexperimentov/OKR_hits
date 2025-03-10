@@ -1,11 +1,9 @@
-<div class="profile-container">
+<div class="profile-container" *ngIf="user">
     <div class="description-container">
         <ul class="profile-data">
-            <li>Имя</li>
-            <li>Фамилия</li>
-            <li>Отчество</li>
-            <li>Номер группы</li>
-            <li>Номер телефона</li>
+            <li>ФИО: {{ user.credentials }}</li>
+            <li>Номер группы: {{ user.groupId }}</li>
+            <li>Номер телефона: {{ user.phone }}</li>
         </ul>
         <button class="edit-button" (click)="editProfile()">
             <mat-icon>edit</mat-icon>

@@ -32,7 +32,14 @@ export class UserServiceService {
         }
       })
     );
+  }
 
+  getUserProfile():Observable<any>{
+    return this.apiService.get(`${this.userEndpoint}/profile`);
+  }
+
+  getUserById(id:string): Observable<any> { 
+    return this.apiService.get(`${this.userEndpoint}/${id}`);
   }
 
 

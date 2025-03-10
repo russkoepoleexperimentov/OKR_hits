@@ -1,14 +1,32 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ProfileCardComponent } from '../../components/profile-card/profile-card.component';
 import { HeaderComponent } from '../../components/header/header.component';
 import { NavigateBackButtonComponent } from '../../components/navigate-back-button/navigate-back-button.component';
+import { UserServiceService } from '../../services/UserService/user-service.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-profile-page',
-  imports: [ProfileCardComponent,HeaderComponent,NavigateBackButtonComponent],
+  standalone: true,
+  imports: [ProfileCardComponent, HeaderComponent, NavigateBackButtonComponent, CommonModule],
   templateUrl: './profile-page.component.html',
   styleUrl: './profile-page.component.scss'
 })
-export class ProfilePageComponent {
+export class ProfilePageComponent implements OnInit {
+  userId:string | null = null;
+  user: any;
 
+  constructor(private userService: UserServiceService) { }
+
+  ngOnInit(): void {
+    this.userService.getUserProfile().subscribe({
+      next: (currentUser) => {
+        console.log('Текущий пользователь:', currentUser);
+        this.user = currentUser; 
+      },
+      error: (err) => {
+        console.log('Ошибка получения текущего пользователя:', err);
+      }
+    });
+  }
 }
