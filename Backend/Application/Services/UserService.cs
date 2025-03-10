@@ -12,6 +12,7 @@ namespace Application.Services
     public class UserService
     {
         private readonly IUserRepository _userRepository;
+        private readonly IGroupRepository _groupRepository;
         private readonly IValidator<UserRegistrationDto> _registrationValidator;
         private readonly IValidator<UserUpdateDto> _updateValidator;
         private readonly IMapper _mapper;
@@ -21,6 +22,7 @@ namespace Application.Services
             IMapper mapper,
             IValidator<UserRegistrationDto> registrationValidator,
             IValidator<UserUpdateDto> updateValidator,
+            IGroupRepository groupRepository,
             JWTService jwtService)
         {
             _userRepository = userRepository;
@@ -28,6 +30,7 @@ namespace Application.Services
             _updateValidator = updateValidator;
             _mapper = mapper;
             _jwtService = jwtService;
+            _groupRepository = groupRepository;
         }
 
         public async Task<TokenResponseDto> RegisterAndGetTokenAsync(UserRegistrationDto dto)
@@ -67,9 +70,7 @@ namespace Application.Services
 
             var user = await GetFromDbAsync(id.Value);
 
-            var dto = _mapper.Map<User, UserDto>(user);
-
-            return dto;
+            return await MapAsync(user);
         }
 
         public async Task<UserDto?> UpdateAndGetMappedAsync(Guid? id, UserUpdateDto dto)
@@ -85,12 +86,20 @@ namespace Application.Services
 
             await _userRepository.UpdateAsync(user);
 
-            return _mapper.Map<User, UserDto>(user);
+            return await MapAsync(user);
         }
 
         public async Task<List<UserDto>> GetUsersByGroupId(Guid id) 
         {
-            return _mapper.Map<List<UserDto>>(await _userRepository.FindByGroupId(id));
+            var users = await _userRepository.FindByGroupId(id);
+            var mappers = new List<UserDto>();
+
+            foreach ( var user in users)
+            {
+                mappers.Add(await MapAsync(user));
+            }
+
+            return mappers;
         }
 
         public async Task<UserDto> AttachUserToGroupAsync(Group group, Guid userId) 
@@ -101,7 +110,7 @@ namespace Application.Services
 
             await _userRepository.UpdateAsync(user);
 
-            return _mapper.Map<User, UserDto>(user);
+            return await MapAsync(user);
         }
 
         public async Task<UserDto> DetatchUserFromGroupAsync(Guid userId) 
@@ -112,7 +121,7 @@ namespace Application.Services
 
             await _userRepository.UpdateAsync(user);
 
-            return _mapper.Map<User, UserDto>(user);
+            return await MapAsync(user);
         }
 
         public async Task<Guid> ChangeUsersRoleAsync(Guid userId, Role role)
@@ -129,7 +138,30 @@ namespace Application.Services
 
         public async Task<List<UserDto>> Search(Guid? groupId, string? nameQuery)
         {
-            return (await _userRepository.Search(groupId, nameQuery)).Select(_mapper.Map<User, UserDto>).ToList();
+            var users = (await _userRepository.Search(groupId, nameQuery));
+            var mappers = new List<UserDto>();
+
+            foreach (var user in users)
+            {
+                mappers.Add(await MapAsync(user));
+            }
+
+            return mappers;
+        }
+
+        public async Task<UserDto> MapAsync(User user)
+        {
+            var dto = _mapper.Map<User, UserDto>(user);
+            
+            if(user.GroupId != null)
+            {
+                var group = await _groupRepository.GetByIdAsync(user.GroupId.Value);
+
+                if(group != null)
+                    dto.Group = _mapper.Map<Group, GroupDto>(group);
+            }
+
+            return dto;
         }
 
         internal async Task<User> GetFromDbAsync(Guid id)

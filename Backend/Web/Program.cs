@@ -107,6 +107,14 @@ namespace Web
                 }
             }
 
+            app.UseCors(x => x
+            .AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader());
+
+            app.UseHttpsRedirection();
+
+
             //if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
@@ -116,6 +124,8 @@ namespace Web
             app.UseMiddleware<ExceptionCatchMiddleware>();
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseHttpsRedirection();
 
             app.MapControllers();
 
