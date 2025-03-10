@@ -1,4 +1,6 @@
-﻿using Application.Dtos;
+﻿using System.Text;
+using System.Text.Unicode;
+using Application.Dtos;
 using Application.Services;
 using Common.Enums;
 using Microsoft.AspNetCore.Authorization;
@@ -33,7 +35,7 @@ namespace Web.Controllers
         }
 
         /// <summary>
-        /// Search in all applicationms
+        /// Search in all applications
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -43,6 +45,21 @@ namespace Web.Controllers
         public async Task<IActionResult> SearchInAll (Guid? studentId, DateTime? from, DateTime? to, bool onlyChecking)
         {
             return Ok(await _applicationService.GetAllApplicationsMappedAsync(studentId, from, to, onlyChecking));
+        }
+
+        /// <summary>
+        /// Generates report from applications
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [Authorize(Roles = AccessRights.Deneary)]
+        [HttpGet("report")]
+        public async Task<IActionResult> Report (Guid? studentId, DateTime? from, DateTime? to)
+        {
+            var data = await _applicationService.MakeReport(studentId, from, to);
+            var bytes = Encoding.UTF8.GetBytes(data.Data!);
+
+            return File(bytes, "text/csv", "report.csv");
         }
 
         /// <summary>

@@ -1,4 +1,5 @@
-﻿using Application.Dtos;
+﻿using System.Text;
+using Application.Dtos;
 using Application.Validators;
 using AutoMapper;
 using Common;
@@ -33,6 +34,29 @@ namespace Application.Services
         {
             var applications = await _applicationRepository.Search(userId, from, to, onlyOnChecking);
             return applications.Select(_mapper.Map<StudentApplication, StudentApplicationDto>).ToList();
+        }
+
+        public async Task<CsvReportData> MakeReport(Guid? userId, DateTime? from, DateTime? to)
+        {
+            var applications = await _applicationRepository.Search(userId, from, to, false);
+
+            var csv = new StringBuilder("ApplicationID;Credentials;StudentId;StartDate;EndDate;Status;Created;LastUpdated\n");
+
+            foreach (var application in applications)
+            {
+                csv.AppendLine(
+                        $"{application.Id};" +
+                        $"{application.Author.Credentials};" +
+                        $"{application.Author.Id};" +
+                        $"{application.StartDate};" +
+                        $"{application.EndDate};" +
+                        $"{application.Status};" +
+                        $"{application.CreatedAt};" +
+                        $"{application.UpdatedAt}"
+                    );
+            }
+
+            return new CsvReportData { Data = csv.ToString() };
         }
 
         public async Task<StudentApplicationDto> GetApplicationMappedAsync(Guid id)

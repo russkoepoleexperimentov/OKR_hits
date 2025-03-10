@@ -12,6 +12,11 @@ namespace Application.Dtos
         public StudentApplicationStatus Status { get; set; }
     }
 
+    public class CsvReportData
+    {
+        public string? Data { get; set; }
+    }
+
     public class StudentApplicationCreateUpdateDto
     {
         public string? Description { get; set; }
