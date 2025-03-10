@@ -118,6 +118,7 @@ namespace Web.Controllers
             return Ok(await _userService.ChangeUsersRoleAsync(id, Role.Deneary));
         }
 
+
         /// <summary>
         /// [Deanary] Give user teacher role
         /// </summary>
