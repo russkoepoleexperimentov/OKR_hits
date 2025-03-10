@@ -1,0 +1,28 @@
+.main-container {
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+    margin: auto;
+    margin-top: 100px;
+    width: fit-content; 
+    justify-content: center; 
+}
+
+.applications-container {
+    position: relative;
+    padding: 16px 0px 16px 16px;
+    display: flex;
+    flex-wrap: wrap; 
+    gap: 32px; 
+    background-color: #fff;
+    justify-content: flex-start; 
+    width: 980px;
+    
+}
+
+app-application-card {
+    width: calc((100% - 64px) / 3); 
+    min-width: 250px; 
+    max-width: 300px;
+    height: fit-content;
+}

@@ -1,0 +1,55 @@
+@import '../../environment/variables';
+
+.filter-form {
+    width: fit-content;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 15px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.input-field,
+.date-input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background: #ddd;
+    box-sizing: border-box;
+}
+
+.date-range {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.date-separator {
+    margin: 0 5px;
+    font-size: 18px;
+}
+
+.button-container{
+    display: flex;
+    justify-content: flex-end;
+    
+    .apply-button {
+
+        width: 50%;
+        padding: 10px;
+        font-size: 16px;
+        background: $Bg-Secondary-Color;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+    
+        &:hover {
+            background: $OnCoursor-Bg-Color;
+        }
+    }
+}

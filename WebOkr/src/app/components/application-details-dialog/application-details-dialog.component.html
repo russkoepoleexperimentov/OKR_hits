@@ -1,0 +1,17 @@
+<div class="application-details-container">
+    <div mat-dialog-title>Детали заявки</div>
+    <div mat-dialog-content>
+        <p><strong>Описание:</strong> {{ data.description }}</p>
+        <p><strong>Дата начала:</strong> {{ data.startDate }}</p>
+        <p><strong>Дата конца:</strong> {{ data.endDate }}</p>
+        <img [src]="data.files[0]" alt="Загруженные файлы">
+    </div>
+</div>
+
+<!-- 
+<div mat-dialog-content>
+    <p><strong>Описание:</strong> {{ data.description }}</p>
+    <p><strong>Дата начала:</strong> {{ data.startDate }}</p>
+    <p><strong>Дата конца:</strong> {{ data.endDate }}</p>
+    <img [src]="data.files[0]" alt="Загруженные файлы">
+</div> -->

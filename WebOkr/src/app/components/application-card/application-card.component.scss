@@ -1,0 +1,27 @@
+@import '../../environment/variables';
+
+.application-container {
+    width: 100%;
+    background:$Bg-Secondary-Color ;
+    border-radius: 10px;
+    padding: 15px;
+    gap:15px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    justify-content: space-between;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+    .student-name {
+        font-size: 16px;
+        text-align: center;
+    }
+
+    .application-card-footer {
+        display: flex;
+        justify-content: space-between;
+        padding-top: 10px;
+        font-size: 14px;
+    }
+}

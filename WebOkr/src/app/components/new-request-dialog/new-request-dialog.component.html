@@ -1,0 +1,35 @@
+<h2 mat-dialog-title>Создать новую заявку</h2>
+<div mat-dialog-content>
+    <mat-form-field class="full-width">
+        <mat-label>Описание</mat-label>
+        <input matInput [(ngModel)]="description">
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+        <mat-label>Дата начала</mat-label>
+        <input matInput [matDatepicker]="startPicker" [(ngModel)]="startDate">
+        <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+        <mat-datepicker #startPicker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+        <mat-label>Дата конца</mat-label>
+        <input matInput [matDatepicker]="endPicker" [(ngModel)]="endDate">
+        <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+        <mat-datepicker #endPicker></mat-datepicker>
+    </mat-form-field>
+
+    <div class="file-drop-zone" (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)"
+        (drop)="onDrop($event)">
+        <p *ngIf="!selectedFiles.length">Перетащите файлы сюда или нажмите для выбора</p>
+        <ul *ngIf="selectedFiles.length">
+            <li *ngFor="let file of selectedFiles">{{ file.name }}</li>
+        </ul>
+        <input type="file" #fileInput (change)="onFileSelected($event)" multiple>
+    </div>
+</div>
+
+<div mat-dialog-actions align="end">
+    <button mat-button (click)="close()">Отмена</button>
+    <button mat-button color="primary" (click)="save()">Создать</button>
+</div>
