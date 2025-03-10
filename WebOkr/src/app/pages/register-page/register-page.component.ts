@@ -4,6 +4,7 @@ import { RegisterFormComponent } from '../../components/register-form/register-f
 
 @Component({
   selector: 'app-register-page',
+  standalone: true,
   imports: [HeaderComponent,RegisterFormComponent],
   templateUrl: './register-page.component.html',
   styleUrl: './register-page.component.scss'
