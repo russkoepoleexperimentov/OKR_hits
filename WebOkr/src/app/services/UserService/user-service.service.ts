@@ -34,12 +34,22 @@ export class UserServiceService {
     );
   }
 
-  getUserProfile():Observable<any>{
+  getUserProfile(): Observable<any> {
     return this.apiService.get(`${this.userEndpoint}/profile`);
   }
 
-  getUserById(id:string): Observable<any> { 
+  getUserById(id: string): Observable<any> {
     return this.apiService.get(`${this.userEndpoint}/${id}`);
+  }
+
+  editUserInfo(credentials?: string, email?: string, phone?: string): Observable<any> {
+    const body: any = {};
+
+    if (credentials) body.credentials = credentials;
+    if (email) body.email = email;
+    if (phone) body.phone = phone;
+
+    return this.apiService.patch(`${this.userEndpoint}/profile`, body);
   }
 
 

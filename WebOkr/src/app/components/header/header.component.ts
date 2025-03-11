@@ -22,7 +22,8 @@ export class HeaderComponent {
   }
 
   logout() {
-    console.log("work");
+    localStorage.removeItem('token');
+    window.location.href="/login";
   }
 
   @HostListener('document:click', ['$event'])

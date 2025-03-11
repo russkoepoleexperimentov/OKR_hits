@@ -31,6 +31,11 @@ export class ApiService {
       .pipe(catchError(this.handleError));
   }
 
+  patch<T>(endpoint: string, body: any): Observable<T> {
+    return this.http.patch<T>(`${this.apiUrl}${endpoint}`, body, { headers: this.getHeaders() })
+      .pipe(catchError(this.handleError));
+  }
+
   put<T>(endpoint: string, body: any): Observable<T> {
     return this.http.put<T>(`${this.apiUrl}${endpoint}`, body, { headers: this.getHeaders() })
       .pipe(catchError(this.handleError));
@@ -40,6 +45,7 @@ export class ApiService {
     return this.http.delete<T>(`${this.apiUrl}${endpoint}`, { headers: this.getHeaders() })
       .pipe(catchError(this.handleError));
   }
+
 
   private handleError(error: HttpErrorResponse) {
     console.error('Ошибка API:', error);

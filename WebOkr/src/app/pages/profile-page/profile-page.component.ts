@@ -29,4 +29,15 @@ export class ProfilePageComponent implements OnInit {
       }
     });
   }
+
+  editProfile(updateData: any) {
+    this.userService.editUserInfo(updateData.credentials, updateData.email, updateData.phone).subscribe({
+      next: (response) => {
+        this.user = response;
+      },
+      error: (err) => {
+        console.log('Ошибка обновления пользователя:', err);
+      }
+    });
+  }
 }
