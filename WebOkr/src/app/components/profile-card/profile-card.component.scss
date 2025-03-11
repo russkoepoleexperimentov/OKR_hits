@@ -82,7 +82,7 @@
 
 .button-group {
     display: flex;
-    justify-content: flex-end;
+    justify-content: flex-start;
     width: 100%;
     padding: 15px;
     padding-bottom: 0;
@@ -97,7 +97,6 @@
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    margin-left: auto;
 }
 
 .confirm-button {
@@ -108,7 +107,6 @@
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    margin-left: auto;
 }
 
 .confirm-button:hover {
