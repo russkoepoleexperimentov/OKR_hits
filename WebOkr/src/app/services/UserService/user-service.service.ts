@@ -32,8 +32,32 @@ export class UserServiceService {
         }
       })
     );
+  }
 
+  getUserProfile(): Observable<any> {
+    return this.apiService.get(`${this.userEndpoint}/profile`);
+  }
+
+  getUserById(id: string): Observable<any> {
+    return this.apiService.get(`${this.userEndpoint}/${id}`);
+  }
+
+  editUserInfo(body:any): Observable<any> {
+    return this.apiService.put(`${this.userEndpoint}/profile`, body);
   }
 
 
+  makeDeanery(id: string): Observable<any> {
+    return this.apiService.post<{ token: string }>(`${this.userEndpoint}/${id}/makeDeanery`,id).pipe(
+      tap(response => {
+      })
+    );
+  }
+
+  makeTeacher(id: string): Observable<any> {
+    return this.apiService.post<{ token: string }>(`${this.userEndpoint}/${id}/makeTeacher`,id).pipe(
+      tap(response => {
+      })
+    );
+  }
 }

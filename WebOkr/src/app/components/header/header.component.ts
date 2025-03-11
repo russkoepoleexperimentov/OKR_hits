@@ -11,24 +11,26 @@ import { RouterLink } from '@angular/router';
 })
 export class HeaderComponent {
   @Input() title: string = '';
+  @Input() userId: string | null = null;
   isDropdownOpen: boolean = false;
 
 
-  constructor(private eRef: ElementRef) {}
+  constructor(private eRef: ElementRef) { }
 
   toggleDropdown() {
     this.isDropdownOpen = !this.isDropdownOpen;
   }
 
-  logout(){
-    console.log("work");
+  logout() {
+    localStorage.removeItem('token');
+    window.location.href="/login";
   }
 
   @HostListener('document:click', ['$event'])
   onClickOutside(event: Event) {
     if (!this.eRef.nativeElement.contains(event.target)) {
-      this.isDropdownOpen = false; 
+      this.isDropdownOpen = false;
     }
   }
-  
+
 }

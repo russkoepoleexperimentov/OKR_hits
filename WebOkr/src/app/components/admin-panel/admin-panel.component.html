@@ -1,0 +1,17 @@
+<div class="admin-panel-container" *ngIf="isAdmin">
+    <h3>Администрирование</h3>
+
+    <div class="actions">
+        <label>Назначить роль:</label>
+        <select [(ngModel)]="selectedRole">
+            <option *ngFor="let role of roles" [value]="role">{{ role }}</option>
+        </select>
+
+        <label>Назначить группу:</label>
+        <select [(ngModel)]="selectedGroup">
+            <option *ngFor="let group of groups" [value]="group.id">{{ group.name }}</option>
+        </select>
+
+        <button class="confirm-button" (click)="applyChanges()">Подтвердить</button>
+    </div>
+</div>

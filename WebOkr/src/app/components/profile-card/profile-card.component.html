@@ -1,14 +1,33 @@
-<div class="profile-container">
+<div class="profile-container" *ngIf="user">
     <div class="description-container">
-        <ul class="profile-data">
-            <li>Имя</li>
-            <li>Фамилия</li>
-            <li>Отчество</li>
-            <li>Номер группы</li>
-            <li>Номер телефона</li>
-        </ul>
-        <button class="edit-button" (click)="editProfile()">
-            <mat-icon>edit</mat-icon>
-        </button>
+        <form [formGroup]="profileForm" (ngSubmit)="saveProfile()">
+            <ul class="profile-data">
+                <li>
+                    <label>ФИО:</label>
+                    <input type="text" formControlName="credentials" [readonly]="!isEditing">
+                </li>
+                <li>
+                    <label>Email:</label>
+                    <input type="email" formControlName="email" [readonly]="!isEditing">
+                </li>
+                <li>
+                    <label>Номер телефона:</label>
+                    <input type="tel" formControlName="phone" [readonly]="!isEditing">
+                </li>
+                <li>
+                    <label>Номер группы:</label>
+                    <input type="text" [value]="user.groupId" readonly>
+                </li>
+            </ul>
+
+            <button class="edit-button" type="button" (click)="editProfile()" *ngIf="!isEditing">
+                <mat-icon>edit</mat-icon>
+            </button>
+
+            <div class="button-group">
+                <button class="confirm-button" type="submit" *ngIf="isEditing">Подтвердить</button>
+                <button class="cancel-button" type="button" (click)="cancelEdit()" *ngIf="isEditing">Отменить</button>
+            </div>
+        </form>
     </div>
 </div>

@@ -1,0 +1,56 @@
+@import '../../environment/variables';
+
+.admin-panel-container {
+    position: fixed;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-80%);
+    width: 280px;
+    background: #fff;
+    color: #000;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    font-family: Arial, sans-serif;
+}
+
+.admin-panel-container h3 {
+    margin: 0 0 10px;
+    font-size: 18px;
+    text-align: center;
+}
+
+.actions label {
+    display: block;
+    margin: 10px 0 5px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.actions select {
+    width: 100%;
+    padding: 5px;
+    border-radius: 5px;
+    border: none;
+    background: #34495e;
+    color: #ecf0f1;
+}
+
+.confirm-button {
+    display: block;
+    width: 100%;
+    margin-top: 15px;
+    padding: 8px;
+    border: none;
+    border-radius: 5px;
+    background: $Bg-Secondary-Color;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.confirm-button:hover {
+    background: $OnCoursor-Bg-Color;
+}
