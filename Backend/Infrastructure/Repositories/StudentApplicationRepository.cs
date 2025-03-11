@@ -17,8 +17,9 @@ namespace Infrastructure.Repositories
             to ??= DateTime.MaxValue;
 
             var query = Set.Where(app =>
-                app.StartDate < to.Value || 
-                app.EndDate > from.Value
+                app.StartDate.Date >= from.Value.Date && app.StartDate.Date <= to.Value.Date || 
+                app.EndDate.Date >= from.Value.Date && app.EndDate.Date <= to.Value.Date ||
+                app.StartDate.Date <= from.Value.Date && app.EndDate.Date >= to.Value.Date
             );
 
             if(authorId != null)
