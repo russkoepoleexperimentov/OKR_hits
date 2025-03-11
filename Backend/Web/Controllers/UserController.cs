@@ -61,7 +61,7 @@ namespace Web.Controllers
         /// </summary>
         /// <returns></returns>
         [Authorize]
-        [HttpPatch("profile")]
+        [HttpPut("profile")]
         [ProducesResponseType<UserDto>(StatusCodes.Status200OK)]
         public async Task<IActionResult> UpdateProfile(UserUpdateDto dto)
         {

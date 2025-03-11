@@ -10,10 +10,9 @@ namespace Application.Profiles
         {
             CreateMap<UserRegistrationDto, User>()
                 .ForMember(dest => dest.HashedPassword, opt => opt.Ignore());
+            CreateMap<UserUpdateDto, User>();
 
             CreateMap<User, UserDto>();
-
-
         }
     }
 }
