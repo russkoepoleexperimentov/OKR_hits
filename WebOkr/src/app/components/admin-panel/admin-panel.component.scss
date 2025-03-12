@@ -54,3 +54,77 @@
 .confirm-button:hover {
     background: $OnCoursor-Bg-Color;
 }
+
+
+.group-management{
+    display: flex;
+    flex-direction: column;
+    gap:10px;
+}
+
+.group-management label {
+    display: block;
+    margin: 10px 0 5px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.group-management select {
+    width: 100%;
+    padding: 5px;
+    border-radius: 5px;
+    border: none;
+    background: #34495e;
+    color: #ecf0f1;
+}
+
+.group-title {
+    text-align: start;
+    padding-top: 15px;
+}
+
+.add-group-button {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.group-management input {
+    width: 95%;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.add-group-button {
+    width: 100%;
+    background: $Bg-Secondary-Color;
+    color: white;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.add-group-button:hover {
+    background: $OnCoursor-Bg-Color;
+}
+
+.remove-group-button {
+    width: 100%;
+    background: #f53434;
+    color: white;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.remove-group-button:hover {
+    background: #f72727;
+}
+
+

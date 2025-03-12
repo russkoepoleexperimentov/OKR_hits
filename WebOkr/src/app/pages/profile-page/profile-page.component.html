@@ -1,4 +1,7 @@
-<app-header [title]="user?.credentials" [userId]="userId"></app-header>
-<app-navigate-back-button></app-navigate-back-button>
+<app-header [title]="currentUser?.credentials" [userId]="userId" [currentUserId]="currentUser?.id"></app-header>
+<div class="navigation-block">
+    <app-navigate-back-button></app-navigate-back-button>
+    <app-navigate-main-button></app-navigate-main-button>
+</div>
 <app-profile-card [user]="user" (confirmUpdate)="updateUser($event)"></app-profile-card>
 <app-admin-panel></app-admin-panel>

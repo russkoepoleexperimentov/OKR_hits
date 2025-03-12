@@ -1,4 +1,4 @@
-<app-header [title] = "user?.credentials" [userId]="userId"></app-header>
+<app-header [userRole]="userRole" [userLink]="'Пользователи'" [title] = "user?.credentials" [userId]="userId"></app-header>
 <div class="main-container">
     <app-filter-block></app-filter-block>
     <div class="applications-container">

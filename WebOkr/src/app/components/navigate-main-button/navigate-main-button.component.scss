@@ -1,0 +1,36 @@
+@import '../../environment/variables';
+
+.home-button {
+    margin-left: 15px;
+    margin-top: 10px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: none;
+    background-color: $Bg-Secondary-Color;
+    color: white;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+    
+    mat-icon{
+        color:#000;
+    }
+    &:hover {
+        background-color: $OnCoursor-Bg-Color;
+        transform: scale(1.1);
+    }
+
+    &:active {
+        transform: scale(0.95);
+    }
+
+    .arrow {
+        font-weight: bold;
+    }
+}

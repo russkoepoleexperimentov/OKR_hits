@@ -16,15 +16,16 @@ import { CommonModule } from '@angular/common';
 export class MainPageComponent {
   userId:string | null = null;
   user:any;
+  userRole:string='';
 
   constructor(private userService: UserServiceService) { }
 
   ngOnInit(): void {
     this.userService.getUserProfile().subscribe({
       next: (currentUser) => {
-        console.log('Текущий пользователь:', currentUser);
         this.user = currentUser;
         this.userId = currentUser.id; 
+        this.userRole=currentUser.role;
       },
       error: (err) => {
         console.log('Ошибка получения текущего пользователя:', err);

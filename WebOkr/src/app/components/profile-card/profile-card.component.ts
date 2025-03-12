@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { Component, Input, OnChanges, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { GroupService } from '../../services/Group/group.service';
 
 @Component({
   selector: 'app-profile-card',
@@ -15,8 +16,9 @@ export class ProfileCardComponent implements OnChanges {
   @Output() confirmUpdate = new EventEmitter<any>();
   isEditing = false;
   profileForm: FormGroup;
+  userGroup: string = '';
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private groupService: GroupService) {
     this.profileForm = this.fb.group({
       credentials: [''],
       email: [''],
@@ -24,10 +26,49 @@ export class ProfileCardComponent implements OnChanges {
     });
   }
 
+  isAdminOrDeanery(): boolean {
+    return this.user?.role === 'Admin' || this.user?.role === 'Deanery';
+  }
+
+  getUserRoles(): string {
+    const ROLE_MAP: { [key: string]: string } = {
+      "Student": "Студент",
+      "Teacher": "Учитель",
+      "Deanery": "Сотрудник деканата",
+      "Admin": "Админ"
+    };
+
+    if (!this.user) return '';
+
+    const roles: string[] = [];
+
+    if (this.user.role) {
+      roles.push(ROLE_MAP[this.user.role] || this.user.role);
+    }
+
+    if (this.user.groupId) {
+      roles.push("Студент");
+    }
+
+    return roles.join(', ');
+  }
+
   ngOnChanges() {
     if (this.user) {
       this.patchForm();
+      if (this.user.groupId) {
+        this.loadUserGroup(this.user.groupId);
+      }
     }
+  }
+
+  loadUserGroup(groupId: string) {
+    this.groupService.getGroupInfo(groupId).subscribe({
+      next: (groupData) => {
+        this.userGroup = groupData.name || '—';
+      },
+      error: (err) => console.error("Ошибка загрузки группы:", err)
+    });
   }
 
   editProfile() {
@@ -43,7 +84,7 @@ export class ProfileCardComponent implements OnChanges {
 
   cancelEdit() {
     this.isEditing = false;
-    this.patchForm(); 
+    this.patchForm();
   }
 
   private patchForm() {

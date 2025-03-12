@@ -33,7 +33,6 @@ export class LoginFormComponent {
 
       this.userService.login(email, password).subscribe({
         next: (response) => {
-          console.log('Пользователь зарегистрирован:', response.token);
           localStorage.setItem('token', response.token);
 
           this.router.navigate(['/main']);
