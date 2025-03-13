@@ -21,7 +21,7 @@
     <div class="group-management">
         <label>Выберите родительскую группу:</label>
         <select [(ngModel)]="parentId" (change)="onParentGroupChange()" class="styled-input">
-            <option [value]="null">Без родителя</option>
+            <option [value]="null">Без основной группы</option>
             <option *ngFor="let group of groups" [value]="group.id">{{ group.name }}</option>
         </select>
 

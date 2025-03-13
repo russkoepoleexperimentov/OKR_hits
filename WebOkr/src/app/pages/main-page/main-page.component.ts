@@ -24,7 +24,6 @@ export class MainPageComponent {
   ngOnInit(): void {
     this.userService.getUserProfile().subscribe({
       next: (currentUser) => {
-        console.log("Загружен пользователь:", currentUser);
         this.user = currentUser;
         this.userId = currentUser.id;
         this.currentUserId = currentUser.id;

@@ -48,8 +48,8 @@ export class UserServiceService {
   }
 
 
-  makeDeanery(id: string): Observable<any> {
-    return this.apiService.post<{ token: string }>(`${this.userEndpoint}/${id}/makeDeanery`, id).pipe(
+  makeDeanary(id: string): Observable<any> {
+    return this.apiService.post<{ token: string }>(`${this.userEndpoint}/${id}/makeDeanary`, id).pipe(
       tap(response => {
       })
     );

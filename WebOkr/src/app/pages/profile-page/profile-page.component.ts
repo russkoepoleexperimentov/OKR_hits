@@ -31,7 +31,6 @@ export class ProfilePageComponent implements OnInit {
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
         this.userId = params.get('id');
-        console.log("Обновление профиля, новый userId:", this.userId);
         this.loadUserProfile();
     });
 
@@ -49,7 +48,6 @@ loadUserProfile() {
     if (this.userId) {
         this.userService.getUserById(this.userId).subscribe({
             next: (userData) => {
-                console.log("Профиль загружен:", userData);
                 this.user = userData;
                 if (this.user.groupId) {
                     this.loadUserGroup(this.user.groupId);

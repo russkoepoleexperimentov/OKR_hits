@@ -34,12 +34,12 @@ export class AdminPanelComponent implements OnInit {
   
       this.userService.getUserProfile().subscribe({
           next: (userData) => {
-              this.isAdminOrDean = userData.role === 'Admin' || userData.role === 'Deanery';
+              this.isAdminOrDean = userData.role === 'Admin' || userData.role === 'Deneary';
   
               if (this.isAdminOrDean) {
                   this.loadGroups();
               }
-              this.availableRoles = userData.role === 'Deanery' ? ['Учитель'] : this.roles;
+              this.availableRoles = userData.role === 'Deneary' ? ['Учитель'] : this.roles;
           },
           error: (err) => {
               console.log('Ошибка получения профиля:', err);
@@ -74,7 +74,6 @@ export class AdminPanelComponent implements OnInit {
       return;
     }
 
-    console.log("Создание группы:", fullGroupName, "с parentId:", this.parentId);
 
     this.groupService.createGroup(fullGroupName, this.parentId).subscribe({
       next: (newGroup) => {
@@ -105,7 +104,7 @@ export class AdminPanelComponent implements OnInit {
 
     if (this.selectedRole) {
       const roleMethod = this.selectedRole === 'Сотрудник деканата'
-        ? this.userService.makeDeanery(this.userId)
+        ? this.userService.makeDeanary(this.userId)
         : this.userService.makeTeacher(this.userId);
 
       roleMethod.subscribe({

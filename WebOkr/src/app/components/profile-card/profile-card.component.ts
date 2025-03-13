@@ -34,7 +34,7 @@ export class ProfileCardComponent implements OnChanges {
     const ROLE_MAP: { [key: string]: string } = {
       "Student": "Студент",
       "Teacher": "Учитель",
-      "Deanery": "Сотрудник деканата",
+      "Deneary": "Сотрудник деканата",
       "Admin": "Админ"
     };
 
@@ -46,7 +46,7 @@ export class ProfileCardComponent implements OnChanges {
       roles.push(ROLE_MAP[this.user.role] || this.user.role);
     }
 
-    if (this.user.groupId) {
+    if (this.user.groupId && this.user.role !== 'Student') {
       roles.push("Студент");
     }
 
