@@ -1,4 +1,7 @@
-<app-header [userRole]="userRole" [userLink]="'Пользователи'" [title] = "user?.credentials" [userId]="userId"></app-header>
+<app-header [userRole]="userRole" [userLink]="'Пользователи'" [title]="user?.credentials" [userId]="userId"
+    [currentUserId]="currentUserId">
+</app-header>
+
 <div class="main-container">
     <app-filter-block></app-filter-block>
     <div class="applications-container">
@@ -9,7 +12,7 @@
         <app-application-card></app-application-card>
         <app-application-card></app-application-card>
 
-        
+
         <app-add-application-button></app-add-application-button>
     </div>
 </div>

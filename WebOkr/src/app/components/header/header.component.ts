@@ -37,10 +37,13 @@ export class HeaderComponent {
   }
 
   goToProfile() {
-    console.log(this.currentUserId);
+    console.log("Переход в профиль, userId:", this.currentUserId);
     if (this.currentUserId) {
-        this.router.navigate(['/profile', this.currentUserId]);
+        this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+            this.router.navigate(['/profile', this.currentUserId]);
+        });
     }
 }
+
 
 }

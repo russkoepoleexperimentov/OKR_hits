@@ -29,32 +29,38 @@ export class ProfilePageComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.userId = this.route.snapshot.paramMap.get('id');
-
-    this.userService.getUserProfile().subscribe({
-      next: (currentUserData) => {
-        this.currentUser = currentUserData;
-      },
-      error: (err) => {
-        console.log('Ошибка загрузки текущего пользователя:', err);
-      }
+    this.route.paramMap.subscribe(params => {
+        this.userId = params.get('id');
+        console.log("Обновление профиля, новый userId:", this.userId);
+        this.loadUserProfile();
     });
 
-    if (this.userId) {
-      this.userService.getUserById(this.userId).subscribe({
-        next: (userData) => {
-          this.user = userData;
-          if (this.user.groupId) {
-            this.loadUserGroup(this.user.groupId);
-          }
+    this.userService.getUserProfile().subscribe({
+        next: (currentUserData) => {
+            this.currentUser = currentUserData;
         },
         error: (err) => {
-          console.log('Ошибка загрузки профиля пользователя:', err);
+            console.log('Ошибка загрузки текущего пользователя:', err);
         }
-      });
-    }
-  }
+    });
+}
 
+loadUserProfile() {
+    if (this.userId) {
+        this.userService.getUserById(this.userId).subscribe({
+            next: (userData) => {
+                console.log("Профиль загружен:", userData);
+                this.user = userData;
+                if (this.user.groupId) {
+                    this.loadUserGroup(this.user.groupId);
+                }
+            },
+            error: (err) => {
+                console.log('Ошибка загрузки профиля пользователя:', err);
+            }
+        });
+    }
+}
   loadUserGroup(groupId: string) {
     this.groupService.getGroupInfo(groupId).subscribe({
       next: (groupData) => {
