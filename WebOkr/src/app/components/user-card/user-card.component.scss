@@ -1,0 +1,31 @@
+@import '../../environment/variables';
+
+.user-card {
+    background: $Bg-Secondary-Color;
+    color: #fff;
+    padding: 5px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease-in-out;
+}
+
+.user-card:hover {
+    transform: scale(1.02);
+}
+
+.user-name {
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+    
+}
+
+.user-name:hover {
+    color: #a8a8a8;
+}
+
+.user-group {
+    font-size: 14px;
+    margin-top: 5px;
+}

@@ -1,12 +1,13 @@
 <header class="header">
     <div class="header-block">
         <img class="header-logo" src="/service_logo.ico">
+        <div *ngIf="userRole === 'Deneary' || userRole === 'Admin'" class="users" [routerLink]="['/users']">{{ userLink }}</div>
 
         <div class="header-right">
             <div *ngIf="title" class="header-title" (click)="toggleDropdown()">{{ title }}</div>
 
             <div *ngIf="isDropdownOpen" class="dropdown-menu">
-                <button *ngIf="userId" [routerLink]="['/profile', userId]">Профиль</button>
+                <button *ngIf="currentUserId" (click)="goToProfile()">Профиль</button>
                 <button (click)="logout()">Выйти</button>
             </div>
         </div>

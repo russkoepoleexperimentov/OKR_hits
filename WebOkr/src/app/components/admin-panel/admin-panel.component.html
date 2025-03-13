@@ -1,17 +1,38 @@
-<div class="admin-panel-container" *ngIf="isAdmin">
+<div class="admin-panel-container" *ngIf="isAdminOrDean">
     <h3>Администрирование</h3>
 
     <div class="actions">
         <label>Назначить роль:</label>
-        <select [(ngModel)]="selectedRole">
-            <option *ngFor="let role of roles" [value]="role">{{ role }}</option>
+        <select [(ngModel)]="selectedRole" class="styled-input">
+            <option *ngFor="let role of availableRoles" [value]="role">{{ role }}</option>
         </select>
 
+
         <label>Назначить группу:</label>
-        <select [(ngModel)]="selectedGroup">
-            <option *ngFor="let group of groups" [value]="group.id">{{ group.name }}</option>
+        <select [(ngModel)]="selectedGroup" class="styled-input">
+            <option *ngFor="let group of groups; trackBy: trackByGroupId" [value]="group.id">{{ group.name }}
+            </option>
         </select>
 
         <button class="confirm-button" (click)="applyChanges()">Подтвердить</button>
+    </div>
+
+    <h3 class="group-title">Блок управления группами</h3>
+    <div class="group-management">
+        <label>Выберите родительскую группу:</label>
+        <select [(ngModel)]="parentId" (change)="onParentGroupChange()" class="styled-input">
+            <option [value]="null">Без основной группы</option>
+            <option *ngFor="let group of groups" [value]="group.id">{{ group.name }}</option>
+        </select>
+
+        <input type="text" [(ngModel)]="newGroupName" placeholder="Введите название группы" class="styled-input">
+
+        <button class="add-group-button" (click)="addGroup()">Добавить группу</button>
+
+        <label>Выбрать группу:</label>
+        <select [(ngModel)]="selectedGroupToDelete" class="styled-input">
+            <option *ngFor="let group of groups; trackBy: trackByGroupId" [value]="group.id">{{ group.name }}</option>
+        </select>
+        <button class="remove-group-button" (click)="removeGroup()">Удалить группу</button>
     </div>
 </div>

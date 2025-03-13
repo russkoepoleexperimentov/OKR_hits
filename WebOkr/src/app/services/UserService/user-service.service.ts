@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../httpCLient/api.service';
 import { Observable, tap } from 'rxjs';
+import { HttpParams } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -42,22 +43,29 @@ export class UserServiceService {
     return this.apiService.get(`${this.userEndpoint}/${id}`);
   }
 
-  editUserInfo(body:any): Observable<any> {
+  editUserInfo(body: any): Observable<any> {
     return this.apiService.put(`${this.userEndpoint}/profile`, body);
   }
 
 
-  makeDeanery(id: string): Observable<any> {
-    return this.apiService.post<{ token: string }>(`${this.userEndpoint}/${id}/makeDeanery`,id).pipe(
+  makeDeanary(id: string): Observable<any> {
+    return this.apiService.post<{ token: string }>(`${this.userEndpoint}/${id}/makeDeanary`, id).pipe(
       tap(response => {
       })
     );
   }
 
   makeTeacher(id: string): Observable<any> {
-    return this.apiService.post<{ token: string }>(`${this.userEndpoint}/${id}/makeTeacher`,id).pipe(
+    return this.apiService.post<{ token: string }>(`${this.userEndpoint}/${id}/makeTeacher`, id).pipe(
       tap(response => {
       })
     );
   }
+
+  getUsers(query?: any): Observable<any> {
+    const params = query ? new HttpParams({ fromObject: query }) : new HttpParams();
+    return this.apiService.get(`${this.userEndpoint}/search`, { params });
+  }
+
+
 }

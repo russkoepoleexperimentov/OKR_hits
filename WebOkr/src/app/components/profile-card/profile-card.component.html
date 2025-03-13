@@ -3,20 +3,24 @@
         <form [formGroup]="profileForm" (ngSubmit)="saveProfile()">
             <ul class="profile-data">
                 <li>
-                    <label>ФИО:</label>
+                    <label>ФИО: </label>
                     <input type="text" formControlName="credentials" [readonly]="!isEditing">
                 </li>
                 <li>
-                    <label>Email:</label>
+                    <label>Email: </label>
                     <input type="email" formControlName="email" [readonly]="!isEditing">
                 </li>
                 <li>
-                    <label>Номер телефона:</label>
+                    <label>Номер телефона: </label>
                     <input type="tel" formControlName="phone" [readonly]="!isEditing">
                 </li>
                 <li>
-                    <label>Номер группы:</label>
-                    <input type="text" [value]="user.groupId" readonly>
+                    <label>Номер группы: </label>
+                    <input type="text" [value]="userGroup" readonly>
+                </li>
+                <li >
+                    <label>Роль: </label>
+                    <input type="text" [value]="getUserRoles()" readonly>
                 </li>
             </ul>
 

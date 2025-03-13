@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders,HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders,HttpErrorResponse, HttpParams, HttpRequest, HttpEvent, HttpResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs';
+import { catchError,filter,map } from 'rxjs';
+
 
 @Injectable({
   providedIn: 'root'
@@ -22,10 +23,21 @@ export class ApiService {
     return headers;
   }
 
-  get<T>(endpoint: string): Observable<T> {
-    return this.http.get<T>(`${this.apiUrl}${endpoint}`, { headers: this.getHeaders() })
+  get<T>(endpoint: string, query?: any): Observable<T> {
+    let params = new HttpParams();
+    
+    if (query) {
+      Object.keys(query).forEach(key => {
+        if (query[key] !== undefined && query[key] !== null) {
+          params = params.append(key, query[key]);
+        }
+      });
+    }
+
+    return this.http.get<T>(`${this.apiUrl}${endpoint}`, { headers: this.getHeaders(), params })
       .pipe(catchError(this.handleError));
   }
+
   post<T>(endpoint: string, body: any): Observable<T> {
     return this.http.post<T>(`${this.apiUrl}${endpoint}`, body, { headers: this.getHeaders() })
       .pipe(catchError(this.handleError));
@@ -45,6 +57,16 @@ export class ApiService {
     return this.http.delete<T>(`${this.apiUrl}${endpoint}`, { headers: this.getHeaders() })
       .pipe(catchError(this.handleError));
   }
+
+  deleteWithParams<T>(endpoint: string, options?: { params?: HttpParams }): Observable<T> {
+    return this.http.delete<T>(`${this.apiUrl}${endpoint}`, {
+      headers: this.getHeaders(),
+      params: options?.params 
+    }).pipe(
+      catchError(this.handleError)
+    );
+  }
+  
 
 
   private handleError(error: HttpErrorResponse) {

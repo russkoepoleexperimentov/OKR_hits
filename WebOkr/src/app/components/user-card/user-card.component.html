@@ -1,0 +1,4 @@
+<div class="user-card" *ngFor="let user of users">
+    <h3 (click)="goToProfile(user.id)" class="user-name">{{user.credentials}}</h3>
+    <p class="user-group">Группа: {{user.group}}</p>
+</div>
