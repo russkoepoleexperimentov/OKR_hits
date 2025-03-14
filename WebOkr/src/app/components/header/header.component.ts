@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, HostListener, Input } from '@angular/core';
+import { Component, ElementRef, HostListener, Input, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 
 @Component({
@@ -9,16 +9,25 @@ import { Router, RouterLink } from '@angular/router';
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
   @Input() title: string = '';
   @Input() userId: string | null = null;
-  @Input() userLink:string='';
+  @Input() userLink: string = '';
   @Input() userRole: string | null = null;
-  @Input() currentUserId:string|null=null;
+  @Input() currentUserId: string | null = null;
   isDropdownOpen: boolean = false;
-
+  private userCheckTimeout: any;
 
   constructor(private eRef: ElementRef, private router: Router) { }
+
+  ngOnInit() {
+    this.userCheckTimeout = setTimeout(() => {
+      if (!this.title || this.title.trim() === '') {
+        console.warn("User name not loaded. Redirecting to login...");
+        this.logout();
+      }
+    }, 2000);
+  }
 
   toggleDropdown() {
     this.isDropdownOpen = !this.isDropdownOpen;
@@ -26,7 +35,8 @@ export class HeaderComponent {
 
   logout() {
     localStorage.removeItem('token');
-    window.location.href="/login";
+    clearTimeout(this.userCheckTimeout);
+    this.router.navigate(['/login']);
   }
 
   @HostListener('document:click', ['$event'])
@@ -39,11 +49,9 @@ export class HeaderComponent {
   goToProfile() {
     console.log("Переход в профиль, userId:", this.currentUserId);
     if (this.currentUserId) {
-        this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-            this.router.navigate(['/profile', this.currentUserId]);
-        });
+      this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+        this.router.navigate(['/profile', this.currentUserId]);
+      });
     }
-}
-
-
+  }
 }

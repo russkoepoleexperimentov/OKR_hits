@@ -48,7 +48,7 @@ loadUserProfile() {
     if (this.userId) {
         this.userService.getUserById(this.userId).subscribe({
             next: (userData) => {
-                this.user = userData;
+                this.user = { ...userData};
                 if (this.user.groupId) {
                     this.loadUserGroup(this.user.groupId);
                 }

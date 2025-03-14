@@ -17,6 +17,7 @@ export class ProfileCardComponent implements OnChanges {
   isEditing = false;
   profileForm: FormGroup;
   userGroup: string = '';
+  wasStudent: boolean = false; 
 
   constructor(private fb: FormBuilder, private groupService: GroupService) {
     this.profileForm = this.fb.group({
@@ -34,30 +35,35 @@ export class ProfileCardComponent implements OnChanges {
     const ROLE_MAP: { [key: string]: string } = {
       "Student": "Студент",
       "Teacher": "Учитель",
-      "Deneary": "Сотрудник деканата",
+      "Deanery": "Сотрудник деканата",
       "Admin": "Админ"
     };
-
+  
     if (!this.user) return '';
-
-    const roles: string[] = [];
-
+  
+    const roles = new Set<string>(); 
+  
     if (this.user.role) {
-      roles.push(ROLE_MAP[this.user.role] || this.user.role);
+      roles.add(ROLE_MAP[this.user.role] || this.user.role);
     }
-
-    if (this.user.groupId && this.user.role !== 'Student') {
-      roles.push("Студент");
+  
+    if ((this.user.groupId || this.wasStudent) && !roles.has("Студент")) {
+      roles.add("Студент");
     }
-
-    return roles.join(', ');
+  
+    return Array.from(roles).join(', ');
   }
+  
 
   ngOnChanges() {
     if (this.user) {
       this.patchForm();
+
       if (this.user.groupId) {
         this.loadUserGroup(this.user.groupId);
+        this.wasStudent = true; 
+      } else {
+        this.userGroup = ' ';
       }
     }
   }

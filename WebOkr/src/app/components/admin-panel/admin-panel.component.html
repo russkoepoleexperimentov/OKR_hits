@@ -34,5 +34,6 @@
             <option *ngFor="let group of groups; trackBy: trackByGroupId" [value]="group.id">{{ group.name }}</option>
         </select>
         <button class="remove-group-button" (click)="removeGroup()">Удалить группу</button>
+        <button class="remove-user-from-group" (click)="removeUserFromGroup()">Открепить пользователя от  группы</button>
     </div>
 </div>

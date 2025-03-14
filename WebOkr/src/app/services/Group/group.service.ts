@@ -28,14 +28,17 @@ export class GroupService {
     return this.apiService.post(`${this.groupEndpoint}/${groupdId}/users`,body);
   }
 
-  getGroupInfo(id:string): Observable<any> {
-    return this.apiService.get(`${this.groupEndpoint}/${id}`);
+  getGroupInfo(groupId:string): Observable<any> {
+    return this.apiService.get(`${this.groupEndpoint}/${groupId}`);
   }
-  deleteGroup(id: string): Observable<any> {
-    const params = new HttpParams().set('id', id);
+  deleteGroup(groupId: string): Observable<any> {
+    const params = new HttpParams().set('id', groupId);
     return this.apiService.deleteWithParams(`${this.groupEndpoint}`, { params });
   }
   
+  getGroupsUser(groupId:string): Observable<any> {
+    return this.apiService.get(`${this.groupEndpoint}/${groupId}/users`);
+  }
   
 
 }

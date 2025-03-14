@@ -67,5 +67,8 @@ export class UserServiceService {
     return this.apiService.get(`${this.userEndpoint}/search`, { params });
   }
 
+  detachUserFromGroup(userId:string, groupId:string):Observable<any>{
+    return this.apiService.post(`${this.userEndpoint}/${userId}/detatchGroup`, groupId);
+  }
 
 }

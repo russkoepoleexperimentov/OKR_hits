@@ -1,8 +1,18 @@
-<app-header [title]="user?.credentials" [userId]="userId"></app-header>
+<app-header [title]="currentUser?.credentials" [userId]="userId" [currentUserId]="currentUser?.id"></app-header>
+
 <div class="navigation-block">
     <app-navigate-back-button></app-navigate-back-button>
     <app-navigate-main-button></app-navigate-main-button>
 </div>
+
+<div class="filters-container">
+    <label for="groupFilter">Фильтр по группе:</label>
+    <select id="groupFilter" [(ngModel)]="selectedGroupId" (change)="filterUsersByGroup()">
+        <option value="">Без группы</option>
+        <option *ngFor="let group of groups" [value]="group.id">{{ group.name }}</option>
+    </select>
+</div>
+
 <div class="users-list-container">
-    <app-user-card></app-user-card>
+    <app-user-card *ngFor="let user of filteredUsers" [user]="user" [groupName]="groupMap[user.id]"></app-user-card>
 </div>

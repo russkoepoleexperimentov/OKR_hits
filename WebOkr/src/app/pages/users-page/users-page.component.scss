@@ -1,7 +1,8 @@
+
 .users-list-container{
     display: flex;
     flex-direction: column;
-    width: 1000px;
+    width: 850px;
     margin: auto;
     padding-top: 20px;
     
@@ -9,4 +10,23 @@
 .navigation-block{
     display: flex;
     flex-direction: row;
+}
+.filters-container {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 10px;
+    margin: 10px 15px;
+}
+
+.filters-container label {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.filters-container select {
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 14px;
 }
