@@ -15,18 +15,24 @@ export class HeaderComponent implements OnInit {
   @Input() userLink: string = '';
   @Input() userRole: string | null = null;
   @Input() currentUserId: string | null = null;
+
   isDropdownOpen: boolean = false;
   private userCheckTimeout: any;
 
-  constructor(private eRef: ElementRef, private router: Router) { }
+  constructor(
+    private eRef: ElementRef,
+    private router: Router
+  ) {}
 
   ngOnInit() {
-    this.userCheckTimeout = setTimeout(() => {
-      if (!this.title || this.title.trim() === '') {
-        console.warn("User name not loaded. Redirecting to login...");
-        this.logout();
-      }
-    }, 2000);
+    if (this.router.url !== '/register' && this.router.url !== '/') {
+      this.userCheckTimeout = setTimeout(() => {
+        if (!this.title || this.title.trim() === '') {
+          console.warn("User name not loaded. Redirecting to login...");
+          this.logout();
+        }
+      }, 2000);
+    }
   }
 
   toggleDropdown() {

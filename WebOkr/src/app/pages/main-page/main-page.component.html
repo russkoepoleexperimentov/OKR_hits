@@ -3,16 +3,28 @@
 </app-header>
 
 <div class="main-container">
-    <app-filter-block></app-filter-block>
-    <div class="applications-container">
-        <app-application-card></app-application-card>
-        <app-application-card></app-application-card>
-        <app-application-card></app-application-card>
-        <app-application-card></app-application-card>
-        <app-application-card></app-application-card>
-        <app-application-card></app-application-card>
+    <app-filter-block [userRole]="userRole" (filterChanged)="applyFilter($event)">
+    </app-filter-block>
 
+    <div class="applications-container">
+        <app-application-card *ngFor="let request of filteredApplications" [request]="request"
+            [currentUserId]="currentUserId" [currentUserRole]="userRole"
+            (applicationDeleted)="removeApplication($event)">
+        </app-application-card>
 
         <app-add-application-button></app-add-application-button>
+
     </div>
+
+</div>
+<div class="pagination">
+    <button mat-icon-button (click)="prevPage()" [disabled]="currentPage === 1">
+        <mat-icon>chevron_left</mat-icon>
+    </button>
+
+    <span>Страница {{ currentPage }} из {{ getTotalPages() }}</span>
+
+    <button mat-icon-button (click)="nextPage()" [disabled]="currentPage >= getTotalPages()">
+        <mat-icon>chevron_right</mat-icon>
+    </button>
 </div>

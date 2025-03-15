@@ -24,8 +24,23 @@ export class StudentAppService {
       return this.apiService.deleteWithParams(`${this.studentAppEndpoint}`, { params });
   }
 
-  getApplication(query:any):Observable<any>{
-    return this.apiService.get(`${this.studentAppEndpoint}`,query);
+  getStudentsApplication(studentId:string):Observable<any>{
+    return this.apiService.get(`${this.studentAppEndpoint}/${studentId}`);
+  }
+  getApplications(query:any):Observable<any>{
+    return this.apiService.get(`${this.studentAppEndpoint}/search`,query);
+  }
+
+  getApplicationsAttachment(studentId:string, applicationId:string):Observable<any>{
+    return this.apiService.get(`${this.studentAppEndpoint}/${studentId}/attachment`, {applicationId});
+  }
+  createApplicationsAttachment(studentId:string, applicationId:string):Observable<any>{
+    return this.apiService.post(`${this.studentAppEndpoint}/${studentId}/attachment`, {applicationId});
+  }
+
+  changeApplicationStatus(applicationId:string, status:string):Observable<any>{
+    const body = {applicationId,status};
+    return this.apiService.put(`${this.studentAppEndpoint}/${applicationId}/changeStatus`,body);
   }
 
 }

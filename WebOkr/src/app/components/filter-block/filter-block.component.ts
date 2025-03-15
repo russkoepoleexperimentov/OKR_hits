@@ -1,18 +1,27 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-filter-block',
-  imports: [CommonModule,FormsModule],
+  standalone: true,
+  imports: [CommonModule, FormsModule],
   templateUrl: './filter-block.component.html',
   styleUrl: './filter-block.component.scss'
 })
 export class FilterBlockComponent {
-  @Input() name: string = '';
-  startDate :string ='';
+  @Input() userRole: string = ''; 
+  @Output() filterChanged = new EventEmitter<{ name: string; startDate: string; endDate: string }>();
+
+  name: string = '';
+  startDate: string = '';
   endDate: string = '';
+
   applyFilter() {
-      console.log(this.name,this.startDate,this.endDate);
+    this.filterChanged.emit({
+      name: this.name,
+      startDate: this.startDate,
+      endDate: this.endDate
+    });
   }
 }

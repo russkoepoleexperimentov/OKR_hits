@@ -1,11 +1,12 @@
 <div class="filter-form">
-    <input type="text" placeholder="Имя" [(ngModel)]="name" class="input-field">
+    <input *ngIf="userRole !== 'Student'" type="text" placeholder="Имя" [(ngModel)]="name" class="input-field">
 
     <div class="date-range">
         <input type="date" [(ngModel)]="startDate" class="date-input">
         <span class="date-separator">-</span>
         <input type="date" [(ngModel)]="endDate" class="date-input">
     </div>
+
     <div class="button-container">
         <button class="apply-button" (click)="applyFilter()">Применить</button>
     </div>

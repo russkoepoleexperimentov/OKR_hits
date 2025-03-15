@@ -1,9 +1,11 @@
-<div class="application-container" (click)="openDetails()">
+<div class="application-container" (click)="openDetails()" >
     <div class="student-name">
-        ФИО студента
+        {{ request?.author.credentials || 'Без описания' }}
     </div>
     <div class="application-card-footer">
-        <div class="status">Статус</div>
-        <div class="date">12.12.2023-14.12-2023</div>
+        <div class="status">{{ getStatusName(request?.status) }}</div>
+        <div class="date">
+            {{ request?.startDate | date: 'dd.MM.yyyy' }} - {{ request?.endDate | date: 'dd.MM.yyyy' }}
+        </div>
     </div>
 </div>
