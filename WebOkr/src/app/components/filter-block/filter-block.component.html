@@ -1,11 +1,22 @@
 <div class="filter-form">
     <input *ngIf="userRole !== 'Student'" type="text" placeholder="Имя" [(ngModel)]="name" class="input-field">
+    
+    <div class="status-filter">
+        <select [(ngModel)]="selectedStatus" class="status-dropdown">
+            <option value="">Все статусы</option>
+            <option value="Checking">На проверке</option>
+            <option value="Approved">Одобрено</option>
+            <option value="Declined">Отклонено</option>
+        </select>
+    </div>
 
     <div class="date-range">
         <input type="date" [(ngModel)]="startDate" class="date-input">
         <span class="date-separator">-</span>
         <input type="date" [(ngModel)]="endDate" class="date-input">
     </div>
+
+    
 
     <div class="button-container">
         <button class="apply-button" (click)="applyFilter()">Применить</button>

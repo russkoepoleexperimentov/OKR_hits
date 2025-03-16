@@ -11,17 +11,19 @@ import { FormsModule } from '@angular/forms';
 })
 export class FilterBlockComponent {
   @Input() userRole: string = ''; 
-  @Output() filterChanged = new EventEmitter<{ name: string; startDate: string; endDate: string }>();
+  @Output() filterChanged = new EventEmitter<{ name: string; startDate: string; endDate: string; status: string }>();
 
   name: string = '';
   startDate: string = '';
   endDate: string = '';
+  selectedStatus: string = '';  
 
   applyFilter() {
     this.filterChanged.emit({
       name: this.name,
       startDate: this.startDate,
-      endDate: this.endDate
+      endDate: this.endDate,
+      status: this.selectedStatus  
     });
   }
 }

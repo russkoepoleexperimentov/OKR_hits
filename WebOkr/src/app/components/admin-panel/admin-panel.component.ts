@@ -108,8 +108,6 @@ export class AdminPanelComponent implements OnInit {
     });
   }
 
-
-
   applyChanges() {
     if (!this.selectedGroup && !this.selectedRole) {
       return;
@@ -118,6 +116,7 @@ export class AdminPanelComponent implements OnInit {
     if (this.selectedGroup) {
       this.groupService.assignStudentToGroup(this.selectedGroup, this.userId).subscribe({
         next: () => {
+          
           this.selectedGroup = '';
           this.userUpdated.emit();
         },
@@ -143,6 +142,7 @@ export class AdminPanelComponent implements OnInit {
   trackByGroupId(index: number, group: any): number | string {
     return group.id;
   }
+  
   onParentGroupChange() {
     if (!this.parentId) {
       this.newGroupName = '';

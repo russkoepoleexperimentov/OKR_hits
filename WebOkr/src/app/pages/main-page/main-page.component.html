@@ -12,7 +12,8 @@
             (applicationDeleted)="removeApplication($event)">
         </app-application-card>
 
-        <app-add-application-button></app-add-application-button>
+        <app-add-application-button (applicationCreated)="loadApplications()"></app-add-application-button>
+
 
     </div>
 

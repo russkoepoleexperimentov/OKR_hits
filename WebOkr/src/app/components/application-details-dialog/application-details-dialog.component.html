@@ -1,7 +1,7 @@
 <div class="application-details-container">
     <div class="dialog-header">
         <div mat-dialog-title>
-            Статус заявки студента {{ data.author.credentials }} - {{ data.status }}
+            Статус заявки студента {{ data.author.credentials }} - {{ getStatusName(data.status) }}
         </div>
         <div *ngIf="isAdminOrDean()" class="status-actions">
             <button mat-icon-button (click)="updateStatus('Approved')" matTooltip="Одобрить заявку">
@@ -17,11 +17,17 @@
         <p>Описание: {{ data.description }}</p>
         <p>Дата начала: {{ data.startDate | date:'dd MMMM yyyy, HH:mm' }}</p>
         <p>Дата конца: {{ data.endDate | date:'dd MMMM yyyy, HH:mm' }}</p>
-
-        <img *ngIf="data.files && data.files.length" [src]="data.files[0]" alt="Загруженные файлы">
+    
+        <div *ngIf="attachments.length > 0" class="attachments">
+            <p>Прикрепленные файлы:</p>
+            <div class="image-gallery">
+                <img *ngFor="let attachment of attachments" [src]="attachment" alt="Вложение">
+            </div>
+        </div>
     </div>
+    
 
-    <div class="delete-button-container" *ngIf="isAuthor()">
+    <div class="delete-button-container" *ngIf="canDeleteApplication()">
         <button mat-fab color="warn" (click)="deleteApplication()" matTooltip="Удалить заявку">
             <mat-icon>delete</mat-icon>
         </button>

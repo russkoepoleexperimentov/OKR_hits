@@ -53,7 +53,6 @@ export class HeaderComponent implements OnInit {
   }
 
   goToProfile() {
-    console.log("Переход в профиль, userId:", this.currentUserId);
     if (this.currentUserId) {
       this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
         this.router.navigate(['/profile', this.currentUserId]);

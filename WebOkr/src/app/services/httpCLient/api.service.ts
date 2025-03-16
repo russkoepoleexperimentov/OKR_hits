@@ -23,7 +23,7 @@ export class ApiService {
     return headers;
   }
 
-  get<T>(endpoint: string, query?: any): Observable<T> {
+  get<T>(endpoint: string, query?: any, responseType: 'json' |'blob' = 'json'): Observable<T> {
     let params = new HttpParams();
     
     if (query) {
@@ -34,14 +34,24 @@ export class ApiService {
       });
     }
 
-    return this.http.get<T>(`${this.apiUrl}${endpoint}`, { headers: this.getHeaders(), params })
-      .pipe(catchError(this.handleError));
+    return this.http.get<T>(`${this.apiUrl}${endpoint}`, { 
+      headers: this.getHeaders(), 
+      params: params,
+      responseType: responseType as any  
+  }).pipe(catchError(this.handleError));
   }
 
   post<T>(endpoint: string, body: any): Observable<T> {
     return this.http.post<T>(`${this.apiUrl}${endpoint}`, body, { headers: this.getHeaders() })
       .pipe(catchError(this.handleError));
   }
+
+  postWithAttachment<T>(endpoint: string, formData: FormData): Observable<T> {
+    return this.http.post<T>(`${this.apiUrl}${endpoint}`, formData, {
+      headers: this.getHeaders().delete('Content-Type') 
+    }).pipe(catchError(this.handleError));
+  }
+  
 
   patch<T>(endpoint: string, body: any): Observable<T> {
     return this.http.patch<T>(`${this.apiUrl}${endpoint}`, body, { headers: this.getHeaders() })

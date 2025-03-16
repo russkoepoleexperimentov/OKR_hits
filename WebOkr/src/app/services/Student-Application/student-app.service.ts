@@ -11,36 +11,56 @@ export class StudentAppService {
 
   constructor(private apiService: ApiService) { }
 
-  
-  createApplication(description:string,startDate:Date,endDate:Date):Observable<any>{
-    const body = {description,startDate,endDate};
-    return this.apiService.post(`${this.studentAppEndpoint}`,body);
-  }
-  editApplication(body:any):Observable<any>{
-    return this.apiService.put(`${this.studentAppEndpoint}`,body);
-  }
-  deleteApplication(id: string): Observable<any> {
-      const params = new HttpParams().set('id', id);
-      return this.apiService.deleteWithParams(`${this.studentAppEndpoint}`, { params });
-  }
-
-  getStudentsApplication(studentId:string):Observable<any>{
+  getStudentsApplication(studentId: string): Observable<any> {
     return this.apiService.get(`${this.studentAppEndpoint}/${studentId}`);
   }
-  getApplications(query:any):Observable<any>{
-    return this.apiService.get(`${this.studentAppEndpoint}/search`,query);
+
+
+
+  getUserApplications(from?: Date, to?: Date, onlyChecking?: boolean, status?: string): Observable<any> {
+    let params = new HttpParams();
+
+    if (from) params = params.set('from', from.toISOString());
+    if (to) params = params.set('to', to.toISOString());
+    if (onlyChecking !== undefined) params = params.set('onlyChecking', onlyChecking.toString());
+    if (status) params = params.set('status', status);
+
+    return this.apiService.get(`${this.studentAppEndpoint}/search`, { params });
   }
 
-  getApplicationsAttachment(studentId:string, applicationId:string):Observable<any>{
-    return this.apiService.get(`${this.studentAppEndpoint}/${studentId}/attachment`, {applicationId});
-  }
-  createApplicationsAttachment(studentId:string, applicationId:string):Observable<any>{
-    return this.apiService.post(`${this.studentAppEndpoint}/${studentId}/attachment`, {applicationId});
+
+  createApplicationsAttachment(applicationId: string, formData: FormData): Observable<any> {
+    return this.apiService.postWithAttachment(`${this.studentAppEndpoint}/${applicationId}/attachment`, formData);
   }
 
-  changeApplicationStatus(applicationId:string, status:string):Observable<any>{
-    const body = {applicationId,status};
-    return this.apiService.put(`${this.studentAppEndpoint}/${applicationId}/changeStatus`,body);
+  getApplicationsAttachment(applicationId: string): Observable<any> {
+    return this.apiService.get(`${this.studentAppEndpoint}/${applicationId}/attachment`, { applicationId });
+  }
+
+
+  createApplication(description: string, startDate: Date, endDate: Date): Observable<any> {
+    const body = { description, startDate, endDate };
+    return this.apiService.post(`${this.studentAppEndpoint}`, body);
+  }
+
+
+  editApplication(id: string, body: any): Observable<any> {
+    return this.apiService.put(`${this.studentAppEndpoint}/${id}`, body);
+  }
+
+  deleteApplication(id: string): Observable<any> {
+    const params = new HttpParams().set('id', id);
+    return this.apiService.deleteWithParams(`${this.studentAppEndpoint}`, { params });
+  }
+
+
+  getApplications(query: any): Observable<any> {
+    return this.apiService.get(`${this.studentAppEndpoint}/search`, query);
+  }
+
+  changeApplicationStatus(applicationId: string, status: string): Observable<any> {
+    const body = {};
+    return this.apiService.put(`${this.studentAppEndpoint}/${applicationId}/changeStatus?status=${status}`, body);
   }
 
 }

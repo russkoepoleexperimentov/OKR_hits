@@ -35,7 +35,7 @@ export class ProfileCardComponent implements OnChanges {
     const ROLE_MAP: { [key: string]: string } = {
       "Student": "Студент",
       "Teacher": "Учитель",
-      "Deanery": "Сотрудник деканата",
+      "Deneary": "Сотрудник деканата",
       "Admin": "Админ"
     };
   

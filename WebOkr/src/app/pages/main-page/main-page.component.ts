@@ -38,7 +38,7 @@ export class MainPageComponent implements OnInit {
     private userService: UserServiceService,
     private studentAppService: StudentAppService,
     private cdr: ChangeDetectorRef
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.userService.getUserProfile().subscribe({
@@ -48,72 +48,92 @@ export class MainPageComponent implements OnInit {
         this.currentUserId = currentUser.id;
         this.userRole = currentUser.role;
         this.loadApplications();
-        this.cdr.detectChanges();
       },
-      error: (err) => {
-        console.log('Ошибка получения текущего пользователя:', err);
-      }
+      error: (err) => console.log('Ошибка получения текущего пользователя:', err)
     });
   }
 
   removeApplication(applicationId: string): void {
     this.applications = this.applications.filter(app => app.id !== applicationId);
-    this.totalApplications = this.applications.length;
+    this.filteredApplications = this.filteredApplications.filter(app => app.id !== applicationId);
+    this.totalApplications = this.filteredApplications.length;
+    this.updatePagination();
+  }
+
+  loadApplications(): void {
+    if (!this.userRole) return;
+
+    if (this.userRole === 'student') {
+      this.studentAppService.getUserApplications(undefined, undefined, false).subscribe({
+        next: (applications) => {
+          this.handleApplicationResponse(applications);
+        },
+        error: (err) => console.error('Ошибка загрузки заявок:', err)
+      });
+    } else {
+      this.studentAppService.getApplications(null).subscribe({
+        next: (applications) => {
+          this.handleApplicationResponse(applications);
+        },
+        error: (err) => console.error('Ошибка загрузки заявок:', err)
+      });
+    }
+  }
+
+  private handleApplicationResponse(applications: any[]): void {
+    this.applications = applications;
+    this.filteredApplications = [...applications];
+    this.totalApplications = applications.length;
     this.updatePagination();
     this.cdr.detectChanges();
   }
 
-  loadApplications(): void {
-    let params: any = {};
-
-    if (this.userRole === 'student') {
-      params.studentId = this.userId;
-    }
-
-    this.studentAppService.getApplications(params).subscribe({
-      next: (applications) => {
-        this.applications = applications;
-        this.totalApplications = this.applications.length;
-        this.updatePagination();
-        this.cdr.detectChanges();
-      },
-      error: (err) => {
-        console.error('Ошибка загрузки заявок:', err);
-      }
-    });
-  }
-
-  applyFilter(filterData: { name: string; startDate: string; endDate: string }): void {
-    const filtered = this.applications.filter(app => {
-      const matchesName = filterData.name
-        ? app.author.credentials.toLowerCase().includes(filterData.name.toLowerCase())
+  applyFilter(filterData: { name: string; startDate: string; endDate: string; status: string }): void {
+    this.filteredApplications = this.applications.filter(app => {
+      const matchesName = filterData.name.trim()
+        ? String(app.author?.credentials).toLowerCase().includes(filterData.name.toLowerCase())
         : true;
+  
       const matchesStartDate = filterData.startDate
-        ? new Date(app.startDate) >= new Date(filterData.startDate)
+        ? new Date(app.startDate).toISOString().split('T')[0] >= new Date(filterData.startDate).toISOString().split('T')[0]
         : true;
+  
       const matchesEndDate = filterData.endDate
-        ? new Date(app.endDate) <= new Date(filterData.endDate)
+        ? new Date(app.endDate).toISOString().split('T')[0] <= new Date(filterData.endDate).toISOString().split('T')[0]
         : true;
-
-      return matchesName && matchesStartDate && matchesEndDate;
+  
+      const matchesStatus = filterData.status && filterData.status !== 'all' 
+        ? app.status.trim().toLowerCase() === filterData.status.trim().toLowerCase()
+        : true;
+  
+      return matchesName && matchesStartDate && matchesEndDate && matchesStatus;
     });
-
-    this.applications = filtered;
-    this.totalApplications = this.applications.length;
+  
+    this.totalApplications = this.filteredApplications.length;
     this.currentPage = 1;
-    this.updatePagination();
+  
+    this.filteredApplications = [...this.filteredApplications];
+  
+    this.cdr.detectChanges();
   }
+  
+  
+  
 
   getTotalPages(): number {
     return Math.ceil(this.totalApplications / this.pageSize);
   }
 
-
   updatePagination(): void {
+    if (this.currentPage < 1) this.currentPage = 1;
+    const totalPages = this.getTotalPages();
+    if (this.currentPage > totalPages) this.currentPage = totalPages;
+  
     const startIndex = (this.currentPage - 1) * this.pageSize;
     const endIndex = startIndex + this.pageSize;
     this.filteredApplications = this.applications.slice(startIndex, endIndex);
   }
+  
 
   prevPage(): void {
     if (this.currentPage > 1) {
