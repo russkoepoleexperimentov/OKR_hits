@@ -5,23 +5,29 @@ import { MatIcon } from '@angular/material/icon';
 import { UserServiceService } from '../../services/UserService/user-service.service';
 import { StudentAppService } from '../../services/Student-Application/student-app.service';
 import { AttachmentService } from '../../services/Attachment/attachment.service';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 @Component({
   selector: 'app-application-details-dialog',
   standalone: true,
-  imports: [MatIcon, CommonModule],
+  imports: [MatIcon, CommonModule, MatDatepickerModule, MatInputModule,MatFormFieldModule,ReactiveFormsModule,FormsModule, MatNativeDateModule],
   templateUrl: './application-details-dialog.component.html',
   styleUrls: ['./application-details-dialog.component.scss']
 })
 export class ApplicationDetailsDialogComponent implements OnInit {
   userRole: string | null = null;
   attachments: string[] = [];
+  editMode:boolean=false;
 
   constructor(
     public dialogRef: MatDialogRef<ApplicationDetailsDialogComponent>,
     private userService: UserServiceService,
     private applicationService: StudentAppService,
-    private attachmentService : AttachmentService,
+    private attachmentService: AttachmentService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) { }
 
@@ -40,36 +46,67 @@ export class ApplicationDetailsDialogComponent implements OnInit {
 
   loadAttachments(): void {
     if (!this.data.id) {
-        console.warn("Нет ID заявки.");
-        return;
+      console.warn("Нет ID заявки.");
+      return;
     }
 
     this.applicationService.getApplicationsAttachment(this.data.id).subscribe({
-        next: (attachmentIds) => {
-            if (!attachmentIds || attachmentIds.length === 0) {
-                console.warn("Нет вложений.");
-                return;
-            }
-
-
-            attachmentIds.forEach((attachmentId: string) => {
-                this.attachmentService.getAttachmentById(attachmentId).subscribe({
-                    next: (fileBlob) => {
-                        const fileUrl = URL.createObjectURL(fileBlob);
-                        this.attachments.push(fileUrl);
-                    },
-                    error: (err) => {
-                        console.error(`Ошибка загрузки файла ${attachmentId}:`, err);
-                    }
-                });
-            });
-        },
-        error: (err) => {
-            console.error("Ошибка загрузки списка вложений:", err);
+      next: (attachmentIds) => {
+        if (!attachmentIds || attachmentIds.length === 0) {
+          console.warn("Нет вложений.");
+          return;
         }
-    });
-}
 
+
+        attachmentIds.forEach((attachmentId: string) => {
+          this.attachmentService.getAttachmentById(attachmentId).subscribe({
+            next: (fileBlob) => {
+              const fileUrl = URL.createObjectURL(fileBlob);
+              this.attachments.push(fileUrl);
+            },
+            error: (err) => {
+              console.error(`Ошибка загрузки файла ${attachmentId}:`, err);
+            }
+          });
+        });
+      },
+      error: (err) => {
+        console.error("Ошибка загрузки списка вложений:", err);
+      }
+    });
+  }
+
+
+  toggleEditMode(): void {
+    this.editMode = !this.editMode;
+  }
+
+  saveChanges(): void {
+    if (!(this.isAuthor() || this.isAdminOrDean())) {
+      alert("У вас нет прав редактировать эту заявку.");
+      return;
+    }
+
+    const updatedApplication = {
+      id: this.data.id,
+      description: this.data.description,
+      startDate: this.data.startDate,
+      endDate: this.data.endDate
+    };
+
+
+    this.applicationService.editApplication(this.data.id, updatedApplication).subscribe({
+      next: () => {
+
+        this.editMode = false;
+        this.dialogRef.close({ updated: updatedApplication });
+      },
+      error: (err) => {
+        console.error("Ошибка при сохранении изменений:", err);
+        alert("Не удалось сохранить изменения. Попробуйте снова.");
+      }
+    });
+  }
 
   createFileUrl(file: Blob): string {
     return URL.createObjectURL(file);
@@ -123,7 +160,7 @@ export class ApplicationDetailsDialogComponent implements OnInit {
     this.applicationService.changeApplicationStatus(this.data.id, newStatus)
       .subscribe({
         next: (response) => {
-          this.data.status = newStatus; 
+          this.data.status = newStatus;
           this.dialogRef.close({ updatedStatus: newStatus });
         },
         error: (err) => {

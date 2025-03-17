@@ -63,15 +63,15 @@ export class MainPageComponent implements OnInit {
   loadApplications(): void {
     if (!this.userRole) return;
 
-    if (this.userRole === 'student') {
-      this.studentAppService.getUserApplications(undefined, undefined, false).subscribe({
+    if (this.userRole === 'Student') {
+      this.studentAppService.getApplications(null).subscribe({
         next: (applications) => {
           this.handleApplicationResponse(applications);
         },
         error: (err) => console.error('Ошибка загрузки заявок:', err)
       });
     } else {
-      this.studentAppService.getApplications(null).subscribe({
+      this.studentAppService.getUserApplications().subscribe({
         next: (applications) => {
           this.handleApplicationResponse(applications);
         },

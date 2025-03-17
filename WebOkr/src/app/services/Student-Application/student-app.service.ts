@@ -17,14 +17,13 @@ export class StudentAppService {
 
 
 
-  getUserApplications(from?: Date, to?: Date, onlyChecking?: boolean, status?: string): Observable<any> {
+  getUserApplications(from?: Date, to?: Date, onlyChecking?: boolean): Observable<any> {
     let params = new HttpParams();
 
     if (from) params = params.set('from', from.toISOString());
     if (to) params = params.set('to', to.toISOString());
     if (onlyChecking !== undefined) params = params.set('onlyChecking', onlyChecking.toString());
-    if (status) params = params.set('status', status);
-
+    
     return this.apiService.get(`${this.studentAppEndpoint}/search`, { params });
   }
 
@@ -45,8 +44,9 @@ export class StudentAppService {
 
 
   editApplication(id: string, body: any): Observable<any> {
-    return this.apiService.put(`${this.studentAppEndpoint}/${id}`, body);
+    return this.apiService.put(`${this.studentAppEndpoint}?id=${id}`, body);
   }
+
 
   deleteApplication(id: string): Observable<any> {
     const params = new HttpParams().set('id', id);
@@ -55,7 +55,7 @@ export class StudentAppService {
 
 
   getApplications(query: any): Observable<any> {
-    return this.apiService.get(`${this.studentAppEndpoint}/search`, query);
+    return this.apiService.get(`${this.studentAppEndpoint}/`, query);
   }
 
   changeApplicationStatus(applicationId: string, status: string): Observable<any> {

@@ -24,7 +24,7 @@ export class ApplicationCardComponent {
     if (this.dialogRef) {
       this.dialogRef.close();
     }
-
+  
     this.dialogRef = this.dialog.open(ApplicationDetailsDialogComponent, {
       width: '1000px',
       height: 'fit-content',
@@ -34,16 +34,20 @@ export class ApplicationCardComponent {
         currentUserRole: this.currentUserRole
       }
     });
-
+  
     this.dialogRef.afterClosed().subscribe(result => {
       if (result?.deleted) {
         this.applicationDeleted.emit(this.request.id);
+      }
+      if (result?.updated) {
+        this.request = { ...this.request, ...result.updated };
       }
       if (result?.updatedStatus) {
         this.request.status = result.updatedStatus;
       }
     });
   }
+  
 
 
   getStatusName(status: string): string {
