@@ -1,6 +1,6 @@
+import { Component, Input, OnChanges, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
-import { Component, Input, OnChanges, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { GroupService } from '../../services/Group/group.service';
 
@@ -13,13 +13,18 @@ import { GroupService } from '../../services/Group/group.service';
 })
 export class ProfileCardComponent implements OnChanges {
   @Input() user: any;
+  @Input() currentUserId: string | null = null; 
   @Output() confirmUpdate = new EventEmitter<any>();
+
   isEditing = false;
   profileForm: FormGroup;
   userGroup: string = '';
   wasStudent: boolean = false; 
 
-  constructor(private fb: FormBuilder, private groupService: GroupService) {
+  constructor(
+    private fb: FormBuilder,
+    private groupService: GroupService
+  ) {
     this.profileForm = this.fb.group({
       credentials: [''],
       email: [''],
@@ -27,8 +32,8 @@ export class ProfileCardComponent implements OnChanges {
     });
   }
 
-  isAdminOrDeanery(): boolean {
-    return this.user?.role === 'Admin' || this.user?.role === 'Deanery';
+  canEditProfile(): boolean {
+    return this.user?.id === this.currentUserId;
   }
 
   getUserRoles(): string {
@@ -53,7 +58,6 @@ export class ProfileCardComponent implements OnChanges {
   
     return Array.from(roles).join(', ');
   }
-  
 
   ngOnChanges() {
     if (this.user) {
@@ -78,10 +82,19 @@ export class ProfileCardComponent implements OnChanges {
   }
 
   editProfile() {
+    if (!this.canEditProfile()) {
+      alert("Нет прав для редактирования!");
+      return;
+    }
     this.isEditing = true;
   }
 
   saveProfile() {
+    if (!this.canEditProfile()) {
+      alert("Нет прав для сохранения!");
+      return;
+    }
+
     if (this.profileForm.valid) {
       this.isEditing = false;
       this.confirmUpdate.emit(this.profileForm.value);

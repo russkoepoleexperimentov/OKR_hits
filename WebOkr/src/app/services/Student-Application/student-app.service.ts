@@ -20,8 +20,6 @@ export class StudentAppService {
 
   getUserApplications(from?: Date, to?: Date, onlyChecking?: boolean): Observable<any> {
 
-    console.log('Sending filter params:', { from, to, onlyChecking });
-
     let params = new HttpParams();
     if (from) params = params.set('from', from.toISOString());
     if (to) params = params.set('to', to.toISOString());

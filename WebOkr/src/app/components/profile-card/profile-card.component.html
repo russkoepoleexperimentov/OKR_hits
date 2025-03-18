@@ -24,7 +24,7 @@
                 </li>
             </ul>
 
-            <button class="edit-button" type="button" (click)="editProfile()" *ngIf="!isEditing">
+            <button *ngIf="canEditProfile() && !isEditing" class="edit-button" type="button" (click)="editProfile()" >
                 <mat-icon>edit</mat-icon>
             </button>
 

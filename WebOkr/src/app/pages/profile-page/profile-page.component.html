@@ -3,6 +3,6 @@
     <app-navigate-back-button></app-navigate-back-button>
     <app-navigate-main-button></app-navigate-main-button>
 </div>
-<app-profile-card [user]="user" (confirmUpdate)="updateUser($event)"></app-profile-card>
+<app-profile-card [user]="user" [currentUserId]="currentUser?.id"  (confirmUpdate)="updateUser($event)"></app-profile-card>
 <app-admin-panel (userUpdated)="loadUserProfile()"></app-admin-panel>
 

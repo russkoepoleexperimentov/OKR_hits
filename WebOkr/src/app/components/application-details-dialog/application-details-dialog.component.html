@@ -19,6 +19,7 @@
             <p>Дата конца: {{ data.endDate | date:'dd MMMM yyyy, HH:mm' }}</p>
         </ng-container>
 
+        
         <ng-template #editForm>
             <div class="edit-form">
                 <mat-form-field appearance="outline">
@@ -60,4 +61,14 @@
             <mat-icon>delete</mat-icon>
         </button>
     </div>
+    
+    <div *ngIf="isAdminOrDean()" class="status-actions">
+        <button mat-icon-button (click)="updateStatus('Approved')" matTooltip="Одобрить заявку">
+            <mat-icon>check_circle</mat-icon>
+        </button>
+        <button mat-icon-button (click)="updateStatus('Declined')" matTooltip="Отклонить заявку">
+            <mat-icon>cancel</mat-icon>
+        </button>
+    </div>
+
 </div>

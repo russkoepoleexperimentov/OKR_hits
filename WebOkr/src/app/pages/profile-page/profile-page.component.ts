@@ -37,6 +37,7 @@ export class ProfilePageComponent implements OnInit {
     this.userService.getUserProfile().subscribe({
         next: (currentUserData) => {
             this.currentUser = currentUserData;
+            
         },
         error: (err) => {
             console.log('Ошибка загрузки текущего пользователя:', err);
