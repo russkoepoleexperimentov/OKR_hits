@@ -40,7 +40,6 @@ export class RegisterFormComponent {
 
       this.userService.register(email, password, credentials, normalizedPhone).subscribe({
         next: (response) => {
-          console.log('Пользователь зарегистрирован:', response.token);
           localStorage.setItem('token', response.token);
 
           this.router.navigate(['/main']);

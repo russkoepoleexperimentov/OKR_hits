@@ -1,24 +1,20 @@
-import { Component } from '@angular/core';
-import { UserServiceService } from '../../services/UserService/user-service.service';
+import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-user-card',
-  imports: [CommonModule],
+  standalone: true,
+  imports: [CommonModule,FormsModule],
   templateUrl: './user-card.component.html',
   styleUrl: './user-card.component.scss'
 })
-export class UserCardComponent {
-  users: any[] = [];
+export class UserCardComponent  {
+  @Input() user: any;
+  @Input() groupName:string='';
 
-  constructor(private userService: UserServiceService, private router: Router) { }
-
-  ngOnInit(): void {
-    this.userService.getUsers().subscribe(users => {
-      this.users = users;
-    });
-  }
+  constructor(private router: Router) { }
 
   goToProfile(userId: string) {
     this.router.navigate(['profile', userId]);

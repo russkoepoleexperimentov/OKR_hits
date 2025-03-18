@@ -1,17 +1,63 @@
 <div class="application-details-container">
-    <div mat-dialog-title>Детали заявки</div>
+    <div class="dialog-header">
+        <div mat-dialog-title>
+            Статус заявки студента {{ data.author.credentials }} - {{ getStatusName(data.status) }}
+        </div>
+
+        <div class="header-icons">
+            <button mat-icon-button *ngIf="isAdminOrDean() || isAuthor()" (click)="toggleEditMode()"
+                matTooltip="Редактировать заявку">
+                <mat-icon>edit</mat-icon>
+            </button>
+        </div>
+    </div>
+
     <div mat-dialog-content>
-        <p><strong>Описание:</strong> {{ data.description }}</p>
-        <p><strong>Дата начала:</strong> {{ data.startDate }}</p>
-        <p><strong>Дата конца:</strong> {{ data.endDate }}</p>
-        <img [src]="data.files[0]" alt="Загруженные файлы">
+        <ng-container *ngIf="!editMode; else editForm">
+            <p>Описание: {{ data.description }}</p>
+            <p>Дата начала: {{ data.startDate | date:'dd MMMM yyyy, HH:mm' }}</p>
+            <p>Дата конца: {{ data.endDate | date:'dd MMMM yyyy, HH:mm' }}</p>
+        </ng-container>
+
+        <ng-template #editForm>
+            <div class="edit-form">
+                <mat-form-field appearance="outline">
+                    <mat-label>Описание</mat-label>
+                    <textarea matInput [(ngModel)]="data.description"></textarea>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Дата начала</mat-label>
+                    <input matInput [matDatepicker]="startPicker" [(ngModel)]="data.startDate">
+                    <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+                    <mat-datepicker #startPicker></mat-datepicker>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Дата конца</mat-label>
+                    <input matInput [matDatepicker]="endPicker" [(ngModel)]="data.endDate">
+                    <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+                    <mat-datepicker #endPicker></mat-datepicker>
+                </mat-form-field>
+            </div>
+        </ng-template>
+
+
+        <div *ngIf="attachments.length > 0" class="attachments">
+            <p>Прикрепленные файлы:</p>
+            <div class="image-gallery">
+                <img *ngFor="let attachment of attachments" [src]="attachment" alt="Вложение">
+            </div>
+        </div>
+    </div>
+
+    <div class="actions-container">
+        <button mat-button color="primary" *ngIf="editMode" (click)="saveChanges()">Сохранить</button>
+        <button mat-button color="warn" *ngIf="editMode" (click)="toggleEditMode()">Отмена</button>
+
+        <button mat-fab color="warn" (click)="deleteApplication()" matTooltip="Удалить заявку"
+            *ngIf="canDeleteApplication()">
+            <mat-icon>delete</mat-icon>
+        </button>
     </div>
 </div>
-
-<!-- 
-<div mat-dialog-content>
-    <p><strong>Описание:</strong> {{ data.description }}</p>
-    <p><strong>Дата начала:</strong> {{ data.startDate }}</p>
-    <p><strong>Дата конца:</strong> {{ data.endDate }}</p>
-    <img [src]="data.files[0]" alt="Загруженные файлы">
-</div> -->

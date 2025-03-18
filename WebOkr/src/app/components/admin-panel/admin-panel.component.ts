@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { UserServiceService } from '../../services/UserService/user-service.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -14,10 +14,12 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class AdminPanelComponent implements OnInit {
   @Input() userId!: string;
+  @Output() userUpdated= new EventEmitter<void>();
   isAdminOrDean: boolean = false;
   roles = ['Учитель', 'Сотрудник деканата'];
   availableRoles: string[] = [];
   groups: any[] = [];
+  userGroup: any = null;
   selectedRole: string = '';
   selectedGroup: string = '';
   selectedGroupToDelete: string = '';
@@ -26,7 +28,8 @@ export class AdminPanelComponent implements OnInit {
 
   constructor(private userService: UserServiceService,
     private groupService: GroupService,
-    private route: ActivatedRoute) { }
+    private route: ActivatedRoute,
+    private crf:ChangeDetectorRef) { }
 
 
     ngOnInit(): void {
@@ -35,7 +38,6 @@ export class AdminPanelComponent implements OnInit {
       this.userService.getUserProfile().subscribe({
           next: (userData) => {
               this.isAdminOrDean = userData.role === 'Admin' || userData.role === 'Deneary';
-  
               if (this.isAdminOrDean) {
                   this.loadGroups();
               }
@@ -47,6 +49,17 @@ export class AdminPanelComponent implements OnInit {
       });
   }
 
+  loadUserGroup(groupId: string) {
+    this.groupService.getGroupInfo(groupId).subscribe({
+      next: (groupData) => {
+        this.userGroup = groupData.name;
+      },
+      error: (err) => {
+        console.error('Ошибка загрузки группы пользователя:', err);
+      }
+    });
+  }
+  
   loadGroups() {
     this.groupService.getGroups().subscribe({
       next: (groups) => {
@@ -58,6 +71,15 @@ export class AdminPanelComponent implements OnInit {
     });
   }
 
+  removeUserFromGroup(){
+    this.userService.detachUserFromGroup(this.userId, this.userGroup).subscribe({
+      next: () => {
+        this.userGroup = '';
+        this.userUpdated.emit();
+      },
+      error: (err) => console.log("Ошибка при удалении пользователя из группы", err)
+    });
+  }
 
   addGroup() {
     if (!this.newGroupName.trim()) {
@@ -86,8 +108,6 @@ export class AdminPanelComponent implements OnInit {
     });
   }
 
-
-
   applyChanges() {
     if (!this.selectedGroup && !this.selectedRole) {
       return;
@@ -96,7 +116,9 @@ export class AdminPanelComponent implements OnInit {
     if (this.selectedGroup) {
       this.groupService.assignStudentToGroup(this.selectedGroup, this.userId).subscribe({
         next: () => {
+          
           this.selectedGroup = '';
+          this.userUpdated.emit();
         },
         error: (err) => console.error("Ошибка при назначении в группу:", err)
       });
@@ -110,6 +132,7 @@ export class AdminPanelComponent implements OnInit {
       roleMethod.subscribe({
         next: () => {
           this.selectedRole = '';
+          this.userUpdated.emit();
         },
         error: (err) => console.error(`Ошибка при назначении роли ${this.selectedRole}:`, err)
       });
@@ -119,6 +142,7 @@ export class AdminPanelComponent implements OnInit {
   trackByGroupId(index: number, group: any): number | string {
     return group.id;
   }
+  
   onParentGroupChange() {
     if (!this.parentId) {
       this.newGroupName = '';

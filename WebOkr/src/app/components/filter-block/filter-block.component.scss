@@ -4,6 +4,7 @@
     width: fit-content;
     display: flex;
     flex-direction: column;
+    margin-left: 50px;
     gap: 10px;
     padding: 15px;
     background: #fff;
@@ -33,10 +34,10 @@
     font-size: 18px;
 }
 
-.button-container{
+.button-container {
     display: flex;
     justify-content: flex-end;
-    
+
     .apply-button {
 
         width: 50%;
@@ -47,9 +48,20 @@
         border: none;
         border-radius: 10px;
         cursor: pointer;
-    
+
         &:hover {
             background: $OnCoursor-Bg-Color;
         }
     }
+}
+
+.status-dropdown {
+
+    width: 100%;
+    padding: 5px;
+    border-radius: 5px;
+    border: none;
+    background: #ccc;
+    color: #000;
+
 }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
@@ -13,11 +13,19 @@ import { NewRequestDialogComponent } from '../new-request-dialog/new-request-dia
   styleUrls: ['./add-application-button.component.scss']
 })
 export class AddApplicationButtonComponent  {
+  @Output() applicationCreated = new EventEmitter<void>();  
+
   constructor(private dialog: MatDialog) {}
 
   openDialog() {
-    this.dialog.open(NewRequestDialogComponent, {
+    const dialogRef = this.dialog.open(NewRequestDialogComponent, {
       width: '400px'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result?.created) {
+        this.applicationCreated.emit(); 
+      }
     });
   }
 }
