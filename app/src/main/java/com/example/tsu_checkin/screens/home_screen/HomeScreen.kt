@@ -142,6 +142,7 @@ fun HomeScreen(
                     startDate = state.value?.get(it)?.startDate?.parseDate() ?: "",
                     endDate = state.value?.get(it)?.endDate?.parseDate() ?: "",
                     status = state.value?.get(it)?.status ?: "",
+                    name = state.value?.get(it)?.author?.credentials ?: "",
                     onClick = {
                         navController.navigate(
                             "edit" + "/" + state.value?.get(it)?.id + "/" + state.value?.get(it)?.description

@@ -8,7 +8,14 @@ import com.example.tsu_checkin.network.dto.ApplicationListDto
 import com.example.tsu_checkin.network.dto.ApplicationListDtoItem
 import com.example.tsu_checkin.network.dto.Author
 import com.example.tsu_checkin.network.dto.Group
+import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.ResponseBody
 import retrofit2.Response
+import java.io.File
 import javax.inject.Inject
 
 class ApplicationRepository @Inject constructor(
@@ -51,16 +58,37 @@ class ApplicationRepository @Inject constructor(
         return null
     }
 
-    suspend fun addApplication(applicationAddingDto: ApplicationAddingDto) {
+    suspend fun addApplication(applicationAddingDto: ApplicationAddingDto) : String? {
         val token = sharedPreferences.getString(TOKEN_KEY, "")
 
-        api.addApplication("Bearer $token", applicationAddingDto)
+        val response = api.addApplication("Bearer $token", applicationAddingDto)
+
+        if(response.isSuccessful){
+            return response.body()
+        }
+
+        return null
     }
 
-    suspend fun editApplication(applicationId:String, applicationAddingDto: ApplicationAddingDto) {
+    suspend fun addAttachment(id:String, file: File){
+        val token = sharedPreferences.getString(TOKEN_KEY, "")
+        val part = MultipartBody.Part.createFormData("file", file.getName(),
+            file.asRequestBody("image/*".toMediaTypeOrNull())
+        )
+
+        api.addAttachment("Bearer $token", id, part)
+    }
+
+    suspend fun editApplication(applicationId:String, applicationAddingDto: ApplicationAddingDto) :String? {
         val token = sharedPreferences.getString(TOKEN_KEY, "")
 
-        api.editApplication("Bearer $token", applicationId, applicationAddingDto)
+        val response = api.editApplication("Bearer $token", applicationId, applicationAddingDto)
+
+        if(response.isSuccessful){
+            return response.body()
+        }
+
+        return null
     }
 
     suspend fun deleteApplication(applicationId:String) {
@@ -85,6 +113,30 @@ class ApplicationRepository @Inject constructor(
         val token = sharedPreferences.getString(TOKEN_KEY, "")
 
         val response = api.getGroupUsers("Bearer $token", id)
+
+        if(response.isSuccessful){
+            return response.body()
+        }
+
+        return null
+    }
+
+    suspend fun getAttachmentsById(id:String) : List<String>?{
+        val token = sharedPreferences.getString(TOKEN_KEY, "")
+
+        val response = api.getAttachmentsId("Bearer $token", id)
+
+        if(response.isSuccessful){
+            return response.body()
+        }
+
+        return null
+    }
+
+    suspend fun getAttachment(id:String) : ResponseBody?{
+        val token = sharedPreferences.getString(TOKEN_KEY, "")
+
+        val response = api.getAttachment("Bearer $token", id)
 
         if(response.isSuccessful){
             return response.body()

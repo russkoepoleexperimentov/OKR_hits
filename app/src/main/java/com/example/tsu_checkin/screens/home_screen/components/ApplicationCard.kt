@@ -26,6 +26,7 @@ fun ApplicationCard(
     startDate:String,
     endDate:String,
     status:String,
+    name:String,
     onClick:()->Unit
 ){
     Row(
@@ -50,9 +51,17 @@ fun ApplicationCard(
             )
         }
 
-        Text(
-            text = status
-        )
+        Column(
+            modifier = Modifier.fillMaxHeight().fillMaxWidth(0.5f),
+            verticalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(
+                text = status
+            )
+            Text(
+                text = name
+            )
+        }
     }
 
 }

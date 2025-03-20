@@ -2,6 +2,7 @@ package com.example.tsu_checkin.network
 
 import android.content.Context
 import android.content.SharedPreferences
+import coil3.ImageLoader
 import com.example.tsu_checkin.core.utils.PREFS_TOKEN
 import com.example.tsu_checkin.network.repositories.ApplicationRepository
 import com.example.tsu_checkin.network.repositories.AuthRepository

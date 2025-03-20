@@ -30,6 +30,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.tsu_checkin.R
 import com.example.tsu_checkin.default_components.BackFab
@@ -42,6 +43,8 @@ import com.example.tsu_checkin.screens.auth_screens.components.InputField
 fun SignUpScreen(
     navController: NavController
 ) {
+    val viewModel = hiltViewModel<SignInViewModel>()
+
     var email by remember { mutableStateOf(TextFieldValue("")) }
     var name by remember { mutableStateOf(TextFieldValue("")) }
     var phone by remember { mutableStateOf(TextFieldValue("")) }
@@ -72,7 +75,10 @@ fun SignUpScreen(
         StyledButton(
             text = "Зарегистрироваться",
             containerColor = Color(0xFF1890FF),
-            onClick = {}
+            onClick = {
+                viewModel.reister(email.text,password.text,name.text, phone.text)
+                navController.navigate(Routes.Main.route)
+            }
         )
     }
 }

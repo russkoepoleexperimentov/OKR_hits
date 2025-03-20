@@ -16,6 +16,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -47,6 +48,13 @@ fun ProfileScreen(){
     var email by remember{ mutableStateOf(TextFieldValue(profileState?.email ?: "")) }
     var phone by remember{ mutableStateOf(TextFieldValue(profileState?.phone ?: "")) }
 
+    LaunchedEffect(profileState) {
+        profileState?.let {
+            email = TextFieldValue(profileState?.email ?: "")
+            phone = TextFieldValue(profileState?.phone ?: "")
+        }
+    }
+
     Box(
         modifier = Modifier.fillMaxSize().background(Color.White)
     ){
@@ -75,7 +83,7 @@ fun ProfileScreen(){
             ) {
                 InfoLabel {
                     Text(
-                        text = ((("Группа " + profileState?.groupId) ?: "не назначена")),
+                        text = ((("Группа " + (profileState?.groupId ?: "не назначена")))),
                         modifier = Modifier
                             .padding(vertical = 12.dp, horizontal = 8.dp),
                         fontSize = 16.sp

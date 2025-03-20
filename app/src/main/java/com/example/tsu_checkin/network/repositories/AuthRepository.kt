@@ -6,6 +6,7 @@ import com.example.tsu_checkin.network.ApiService
 import com.example.tsu_checkin.network.dto.EditProfileDto
 import com.example.tsu_checkin.network.dto.LoginDto
 import com.example.tsu_checkin.network.dto.ProfileDto
+import com.example.tsu_checkin.network.dto.RegisterDto
 import com.example.tsu_checkin.network.dto.TokenResponse
 import retrofit2.Response
 import javax.inject.Inject
@@ -17,6 +18,17 @@ class AuthRepository @Inject constructor(
 
     suspend fun signIn(loginDto: LoginDto): TokenResponse? {
         val response = api.login(loginDto)
+
+        if(response.isSuccessful){
+            sharedPreferences.edit().putString(TOKEN_KEY, response.body()?.token).apply()
+            return response.body()
+        }
+
+        return null
+    }
+
+    suspend fun register(registerDto: RegisterDto): TokenResponse? {
+        val response = api.register(registerDto)
 
         if(response.isSuccessful){
             sharedPreferences.edit().putString(TOKEN_KEY, response.body()?.token).apply()
