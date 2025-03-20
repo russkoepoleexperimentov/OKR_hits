@@ -39,7 +39,7 @@ namespace Web.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [Authorize(Roles = AccessRights.Deneary)]
+        [Authorize(Roles = AccessRights.Teacher)]
         [HttpGet("search")]
         [ProducesResponseType<List<StudentApplicationDto>>(StatusCodes.Status200OK)]
         public async Task<IActionResult> SearchInAll (Guid? studentId, DateTime? from, DateTime? to, bool onlyChecking)
