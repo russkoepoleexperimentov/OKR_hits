@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, ElementRef, HostListener, Input, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
+import { UserServiceService } from '../../services/UserService/user-service.service';
 
 @Component({
   selector: 'app-header',
@@ -15,25 +16,45 @@ export class HeaderComponent implements OnInit {
   @Input() userLink: string = '';
   @Input() userRole: string | null = null;
   @Input() currentUserId: string | null = null;
+  
 
   isDropdownOpen: boolean = false;
+  private ignoredRoutes = ['/', '/login', '/register'];
   private userCheckTimeout: any;
 
   constructor(
     private eRef: ElementRef,
-    private router: Router
+    private router: Router,
+    private userService: UserServiceService
   ) {}
 
   ngOnInit() {
-    if (this.router.url !== '/register' && this.router.url !== '/') {
-      this.userCheckTimeout = setTimeout(() => {
-        if (!this.title || this.title.trim() === '') {
-          console.warn("User name not loaded. Redirecting to login...");
-          this.logout();
-        }
-      }, 10000);
+    if (this.ignoredRoutes.includes(this.router.url)) {
+      return;
     }
+
+    this.userService.getUserProfile().subscribe({
+      next: (user) => {
+        if (user && user.credentials) {
+          this.title = user.credentials;
+        }
+        this.setupUserCheck(); 
+      },
+      error: () => {
+        this.setupUserCheck(); 
+      }
+    });
   }
+
+  setupUserCheck() {
+    this.userCheckTimeout = setTimeout(() => {
+      if (!this.title || this.title.trim() === '') {
+        console.warn("User name not loaded. Redirecting to login...");
+        this.logout();
+      }
+    }, 5000);
+  }
+
 
   toggleDropdown() {
     this.isDropdownOpen = !this.isDropdownOpen;
