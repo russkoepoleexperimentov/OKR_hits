@@ -1,5 +1,9 @@
 package com.example.tsu_checkin.screens.application_interation_screens
 
+import android.content.Intent
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -27,9 +31,10 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -38,6 +43,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
@@ -60,12 +66,22 @@ import com.example.tsu_checkin.screens.profile_screen.components.AttachmentLabel
 fun AddingScreen(
     navController: NavController
 ){
+    val context = LocalContext.current
+
     val startDatePickerState = rememberDatePickerState()
     val endDatePickerState = rememberDatePickerState()
 
     var description by remember { mutableStateOf(TextFieldValue("")) }
 
     val viewModel = hiltViewModel<ApplicationViewModel>()
+
+    var selectedFiles by remember { mutableStateOf<List<Uri>>(emptyList()) }
+
+    val filePickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetMultipleContents()
+    ) { uris: List<Uri> ->
+        selectedFiles = uris
+    }
 
     Box(modifier = Modifier.fillMaxSize().background(Color.White)){
         BackFab {
@@ -105,8 +121,14 @@ fun AddingScreen(
                     )
                 }
 
-                items(2){
-                    AttachmentLabel("вложение")
+                items(selectedFiles.size){
+                    AttachmentLabel(selectedFiles[it].path ?: "", onClick = {
+                        val intent = Intent(Intent.ACTION_VIEW).apply {
+                            setDataAndType(selectedFiles[it], "image/*")
+                            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                        }
+                        context.startActivity(intent)
+                    })
                 }
             }
 
@@ -125,7 +147,9 @@ fun AddingScreen(
                             ),
                         )
                     },
-                onClick = {}
+                onClick = {
+                    filePickerLauncher.launch("image/*")
+                }
             ) {
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,

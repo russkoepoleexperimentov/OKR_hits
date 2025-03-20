@@ -3,6 +3,9 @@ package com.example.tsu_checkin.network
 import com.example.tsu_checkin.network.dto.ApplicationAddingDto
 import com.example.tsu_checkin.network.dto.ApplicationListDto
 import com.example.tsu_checkin.network.dto.ApplicationListDtoItem
+import com.example.tsu_checkin.network.dto.Author
+import com.example.tsu_checkin.network.dto.EditProfileDto
+import com.example.tsu_checkin.network.dto.Group
 import com.example.tsu_checkin.network.dto.LoginDto
 import com.example.tsu_checkin.network.dto.ProfileDto
 import com.example.tsu_checkin.network.dto.TokenResponse
@@ -11,6 +14,7 @@ import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
@@ -23,11 +27,23 @@ interface ApiService {
     @GET("api/User/profile")
     suspend fun getProfile(@Header("Authorization") token:String):Response<ProfileDto>
 
+    @PATCH("api/User/profile")
+    suspend fun editProfile(@Header("Authorization") token:String, @Body editProfileDto: EditProfileDto):Response<ProfileDto>
+
+    @GET("api/Group")
+    suspend fun getGroups(@Header("Authorization") token:String) : Response<List<Group>>
+
+    @GET("api/Group/{id}/users")
+    suspend fun getGroupUsers(@Header("Authorization") token:String, @Path("id") id: String):Response<List<Author>>
+
     @GET("api/StudentApplication")
     suspend fun getApplication(@Header("Authorization") token:String, @Query("from") from:String?, @Query("to") to:String?, @Query("onlyChecking") onlyChecking:Boolean):Response<ApplicationListDto>
 
     @GET("api/StudentApplication/{id}")
     suspend fun getApplicationById(@Header("Authorization") token:String, @Path("id") id: String): Response<ApplicationListDtoItem?>
+
+    @GET("api/StudentApplication/search")
+    suspend fun getAllApplications(@Header("Authorization") token:String, @Query("from") from:String?, @Query("to") to:String?, @Query("onlyChecking") onlyChecking:Boolean):Response<ApplicationListDto>
 
     @POST("api/StudentApplication")
     suspend fun addApplication(@Header("Authorization") token:String, @Body applicationAddingDto: ApplicationAddingDto)
@@ -37,5 +53,4 @@ interface ApiService {
 
     @DELETE("api/StudentApplication")
     suspend fun deleteApplication(@Header("Authorization") token:String, @Query("id") applicationId:String)
-
 }

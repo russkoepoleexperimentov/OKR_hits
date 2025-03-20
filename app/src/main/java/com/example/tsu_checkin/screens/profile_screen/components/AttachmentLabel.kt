@@ -1,6 +1,7 @@
 package com.example.tsu_checkin.screens.profile_screen.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -21,14 +22,18 @@ import com.example.tsu_checkin.R
 
 @Composable
 fun AttachmentLabel(
-    text:String
+    text:String,
+    onClick:()->Unit
 ){
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .shadow(4.dp, RoundedCornerShape(12.dp))
             .background(color = Color(0xFF40A9FF), shape = RoundedCornerShape(12.dp))
-            .padding(horizontal = 16.dp, vertical = 12.dp),
+            .padding(horizontal = 16.dp, vertical = 12.dp)
+            .clickable {
+
+            },
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {

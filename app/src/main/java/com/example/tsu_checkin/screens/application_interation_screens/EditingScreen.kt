@@ -101,9 +101,9 @@ fun EditingScreen(
                     )
                 }
 
-                items(2){
+                    /*items(2){
                     AttachmentLabel("вложение")
-                }
+                }*/
             }
 
             IconButton(

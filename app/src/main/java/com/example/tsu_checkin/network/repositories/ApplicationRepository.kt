@@ -6,6 +6,8 @@ import com.example.tsu_checkin.network.ApiService
 import com.example.tsu_checkin.network.dto.ApplicationAddingDto
 import com.example.tsu_checkin.network.dto.ApplicationListDto
 import com.example.tsu_checkin.network.dto.ApplicationListDtoItem
+import com.example.tsu_checkin.network.dto.Author
+import com.example.tsu_checkin.network.dto.Group
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -17,6 +19,18 @@ class ApplicationRepository @Inject constructor(
         val token = sharedPreferences.getString(TOKEN_KEY, "")
 
         val response = api.getApplication("Bearer $token", from, to, onlyChecking)
+
+        if (response.isSuccessful){
+            return response.body()
+        }
+
+        return null
+    }
+
+    suspend fun getAllApplication(from:String?, to:String?, onlyChecking:Boolean): ApplicationListDto? {
+        val token = sharedPreferences.getString(TOKEN_KEY, "")
+
+        val response = api.getAllApplications("Bearer $token", from, to, onlyChecking)
 
         if (response.isSuccessful){
             return response.body()
@@ -53,5 +67,29 @@ class ApplicationRepository @Inject constructor(
         val token = sharedPreferences.getString(TOKEN_KEY, "")
 
         api.deleteApplication("Bearer $token", applicationId)
+    }
+
+    suspend fun getGroups() : List<Group>?{
+        val token = sharedPreferences.getString(TOKEN_KEY, "")
+
+        val response = api.getGroups("Bearer $token")
+
+        if(response.isSuccessful){
+            return response.body()
+        }
+
+        return null
+    }
+
+    suspend fun getGroupUsers(id:String):List<Author>?{
+        val token = sharedPreferences.getString(TOKEN_KEY, "")
+
+        val response = api.getGroupUsers("Bearer $token", id)
+
+        if(response.isSuccessful){
+            return response.body()
+        }
+
+        return null
     }
 }

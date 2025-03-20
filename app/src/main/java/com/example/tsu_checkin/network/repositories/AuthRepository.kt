@@ -3,6 +3,7 @@ package com.example.tsu_checkin.network.repositories
 import android.content.SharedPreferences
 import com.example.tsu_checkin.core.utils.TOKEN_KEY
 import com.example.tsu_checkin.network.ApiService
+import com.example.tsu_checkin.network.dto.EditProfileDto
 import com.example.tsu_checkin.network.dto.LoginDto
 import com.example.tsu_checkin.network.dto.ProfileDto
 import com.example.tsu_checkin.network.dto.TokenResponse
@@ -35,5 +36,13 @@ class AuthRepository @Inject constructor(
         }
 
         return null
+    }
+
+    suspend fun editProfile(editProfileDto: EditProfileDto) : Unit{
+        val token = sharedPreferences.getString(TOKEN_KEY, "")
+
+        val response = api.editProfile("Bearer $token", editProfileDto)
+
+        return
     }
 }

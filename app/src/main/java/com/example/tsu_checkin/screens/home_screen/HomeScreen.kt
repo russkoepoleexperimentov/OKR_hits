@@ -53,6 +53,7 @@ import androidx.navigation.NavController
 import androidx.navigation.navArgument
 import com.example.tsu_checkin.R
 import com.example.tsu_checkin.navigation.Routes
+import com.example.tsu_checkin.screens.application_interation_screens.parseDate
 import com.example.tsu_checkin.screens.home_screen.components.ApplicationCard
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -65,9 +66,11 @@ fun HomeScreen(
 ) {
     var filterVisibility by remember { mutableStateOf(false) }
     var checked by remember { mutableStateOf(false) }
+    var isAllStudents by remember { mutableStateOf(false) }
 
     val viewModel = hiltViewModel<HomeScreenViewModel>()
     val state = viewModel.applications.collectAsState()
+    val profileState = viewModel.profileState.collectAsState()
 
     val startDatePickerState = rememberDatePickerState()
     val endDatePickerState = rememberDatePickerState()
@@ -96,43 +99,6 @@ fun HomeScreen(
             )
         }
 
-        AnimatedVisibility(visible = filterVisibility) {
-            Column(
-                modifier = Modifier.background(Color.White),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                DatePickerDocked(
-                    "Дата начала",
-                    startDatePickerState
-                )
-
-                DatePickerDocked(
-                    "Дата окончания",
-                    endDatePickerState
-                )
-
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(text = "Показать записи на проверке", fontSize = 16.sp)
-                    Checkbox(checked = checked, onCheckedChange = { checked = !checked })
-                }
-
-                TextButton(
-                    onClick = {
-                        viewModel.getApplication(
-                            startDatePickerState.selectedDateMillis?.let { convertMillisToDate(it) }
-                                ?: "",
-                            endDatePickerState.selectedDateMillis?.let { convertMillisToDate(it) }
-                                ?: "",
-                            checked
-                        )
-                    }
-                ) {
-                    Text("Применить")
-                }
-            }
-        }
 
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -173,8 +139,8 @@ fun HomeScreen(
             items(state.value?.size ?: 0) {
                 ApplicationCard(
                     modifier = Modifier.fillMaxWidth(),
-                    startDate = state.value?.get(it)?.startDate ?: "",
-                    endDate = state.value?.get(it)?.endDate ?: "",
+                    startDate = state.value?.get(it)?.startDate?.parseDate() ?: "",
+                    endDate = state.value?.get(it)?.endDate?.parseDate() ?: "",
                     status = state.value?.get(it)?.status ?: "",
                     onClick = {
                         navController.navigate(
@@ -182,6 +148,73 @@ fun HomeScreen(
                         )
                     }
                 )
+            }
+        }
+
+        if(filterVisibility){
+            Box(
+                modifier = Modifier.background(color = Color.Black.copy(alpha = 0.4f))
+            )
+        }
+
+        AnimatedVisibility(visible = filterVisibility) {
+            Column(
+                modifier = Modifier.background(Color.White).padding(horizontal = 24.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                DatePickerDocked(
+                    "Дата начала",
+                    startDatePickerState
+                )
+
+                DatePickerDocked(
+                    "Дата окончания",
+                    endDatePickerState
+                )
+
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(text = "Показать записи на проверке", fontSize = 16.sp)
+                    Checkbox(checked = checked, onCheckedChange = { checked = !checked })
+                }
+
+                if(profileState.value?.role == "Teacher"){
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(text = "Показать все записи", fontSize = 16.sp)
+                        Checkbox(checked = isAllStudents, onCheckedChange = { isAllStudents = !isAllStudents })
+                    }
+                }
+
+                TextButton(
+                    modifier = Modifier.align(Alignment.CenterHorizontally),
+                    onClick = {
+                        if(isAllStudents){
+                            viewModel.getAllApplications(
+                                startDatePickerState.selectedDateMillis?.let { convertMillisToDate(it) }
+                                    ?: "",
+                                endDatePickerState.selectedDateMillis?.let { convertMillisToDate(it) }
+                                    ?: "",
+                                checked
+                            )
+                            filterVisibility = false
+                        }
+                        else{
+                            viewModel.getApplication(
+                                startDatePickerState.selectedDateMillis?.let { convertMillisToDate(it) }
+                                    ?: "",
+                                endDatePickerState.selectedDateMillis?.let { convertMillisToDate(it) }
+                                    ?: "",
+                                checked
+                            )
+                            filterVisibility = false
+                        }
+                    }
+                ) {
+                    Text("Применить")
+                }
             }
         }
     }
@@ -247,6 +280,6 @@ fun DatePickerDocked(
 }
 
 fun convertMillisToDate(millis: Long): String {
-    val formatter = SimpleDateFormat("yyyy-mm-dd", Locale.getDefault())
+    val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
     return formatter.format(Date(millis))
 }

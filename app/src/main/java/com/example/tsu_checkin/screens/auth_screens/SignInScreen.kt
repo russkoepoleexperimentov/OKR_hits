@@ -57,7 +57,7 @@ fun SignInScreen(
             text = "Войти",
             containerColor = Color(0xFF1890FF),
             onClick = {
-                viewModel.login("string@gmail.com", "string1")
+                viewModel.login(email.text, password.text)
                 navController.navigate(Routes.Main.route)
             }
         )
