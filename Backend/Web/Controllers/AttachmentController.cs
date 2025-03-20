@@ -23,10 +23,9 @@ namespace Web.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [Authorize]
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetUsersByGroupId(Guid id)
+        public async Task<IActionResult> GetAttachmentById(Guid id)
         {
             var attachmentInfo = await _attachmentService.GetAttachmentById(id);
             return File(attachmentInfo.Data, attachmentInfo.ContentType);
