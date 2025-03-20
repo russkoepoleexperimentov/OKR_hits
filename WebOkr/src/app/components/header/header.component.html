@@ -1,7 +1,7 @@
 <header class="header">
     <div class="header-block">
         <img class="header-logo" src="/service_logo.ico">
-        <div *ngIf="userRole === 'Deneary' || userRole === 'Admin'" class="users" [routerLink]="['/users']">{{ userLink }}</div>
+        <div *ngIf="userRole === 'Deneary' || userRole === 'Admin' || userRole === 'Teacher'" class="users" [routerLink]="['/users']">{{ userLink }}</div>
 
         <div class="header-right">
             <div *ngIf="title" class="header-title" (click)="toggleDropdown()">{{ title }}</div>

@@ -31,7 +31,7 @@ export class HeaderComponent implements OnInit {
           console.warn("User name not loaded. Redirecting to login...");
           this.logout();
         }
-      }, 5000);
+      }, 10000);
     }
   }
 
