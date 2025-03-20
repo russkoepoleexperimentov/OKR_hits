@@ -15,8 +15,8 @@
     <div mat-dialog-content>
         <ng-container *ngIf="!editMode; else editForm">
             <p>Описание: {{ data.description }}</p>
-            <p>Дата начала: {{ data.startDate | date:'dd MMMM yyyy, HH:mm' }}</p>
-            <p>Дата конца: {{ data.endDate | date:'dd MMMM yyyy, HH:mm' }}</p>
+            <p>Дата начала: {{ data.startDate | date:'dd MMMM yyyy' }}</p>
+            <p>Дата конца: {{ data.endDate | date:'dd MMMM yyyy' }}</p>
         </ng-container>
 
         
